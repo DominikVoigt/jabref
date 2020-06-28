@@ -10,7 +10,7 @@ import org.jabref.logic.formatter.bibtexfields.RemoveBracesFormatter;
 import org.jabref.logic.importer.FetcherException;
 import org.jabref.logic.importer.ImportFormatPreferences;
 import org.jabref.logic.importer.Parser;
-import org.jabref.logic.importer.SearchBasedParserFetcher;
+import org.jabref.logic.importer.RawFetcher;
 import org.jabref.logic.importer.fileformat.BibtexParser;
 import org.jabref.logic.net.URLDownload;
 import org.jabref.model.cleanup.FieldFormatterCleanup;
@@ -24,7 +24,7 @@ import org.apache.http.client.utils.URIBuilder;
 /**
  * Fetches data from the Zentralblatt Math (https://www.zbmath.org/)
  */
-public class ZbMATH implements SearchBasedParserFetcher {
+public class ZbMATH implements RawFetcher {
 
     private final ImportFormatPreferences preferences;
 
@@ -38,9 +38,7 @@ public class ZbMATH implements SearchBasedParserFetcher {
     }
 
     /**
-     * TODO: Implement EntryBasedParserFetcher
-     * We use the zbMATH Citation matcher (https://www.zbmath.org/citationmatching/)
-     * instead of the usual search since this tool is optimized for finding a publication based on partial information.
+     * TODO: Implement EntryBasedParserFetcher We use the zbMATH Citation matcher (https://www.zbmath.org/citationmatching/) instead of the usual search since this tool is optimized for finding a publication based on partial information.
      */
     /*
     @Override
@@ -71,5 +69,10 @@ public class ZbMATH implements SearchBasedParserFetcher {
         new MoveFieldCleanup(new UnknownField("fjournal"), StandardField.JOURNAL).cleanup(entry);
         new FieldFormatterCleanup(StandardField.JOURNAL, new RemoveBracesFormatter()).cleanup(entry);
         new FieldFormatterCleanup(StandardField.TITLE, new RemoveBracesFormatter()).cleanup(entry);
+    }
+
+    @Override
+    public URLDownload getRawUrlDownload(String urlParameters) throws MalformedURLException {
+        return new URLDownload(String.format("https://zbmath.org/bibtexoutput/?%s", urlParameters));
     }
 }

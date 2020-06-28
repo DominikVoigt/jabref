@@ -10,13 +10,14 @@ import org.jabref.logic.help.HelpFile;
 import org.jabref.logic.importer.FetcherException;
 import org.jabref.logic.importer.ImportFormatPreferences;
 import org.jabref.logic.importer.Parser;
-import org.jabref.logic.importer.SearchBasedParserFetcher;
+import org.jabref.logic.importer.RawFetcher;
 import org.jabref.logic.importer.fileformat.BibtexParser;
+import org.jabref.logic.net.URLDownload;
 import org.jabref.model.util.DummyFileUpdateMonitor;
 
 import org.apache.http.client.utils.URIBuilder;
 
-public class ACMPortalFetcher implements SearchBasedParserFetcher {
+public class ACMPortalFetcher implements RawFetcher {
 
     private static final String SEARCH_URL = "https://dl.acm.org/exportformats_search.cfm";
 
@@ -53,5 +54,10 @@ public class ACMPortalFetcher implements SearchBasedParserFetcher {
     @Override
     public Parser getParser() {
         return new BibtexParser(preferences, new DummyFileUpdateMonitor());
+    }
+
+    @Override
+    public URLDownload getRawUrlDownload(String urlParameters) throws MalformedURLException {
+        return new URLDownload(String.format("%s?%s", SEARCH_URL, urlParameters));
     }
 }

@@ -14,15 +14,13 @@ import org.jabref.model.entry.BibEntry;
 import org.jabref.model.strings.StringUtil;
 
 /**
- * Provides a convenient interface for search-based fetcher, which follow the usual three-step procedure:
- * 1. Open a URL based on the search query
- * 2. Parse the response to get a list of {@link BibEntry}
- * 3. Post-process fetched entries
+ * Provides a convenient interface for search-based fetcher, which follow the usual three-step procedure: 1. Open a URL based on the search query 2. Parse the response to get a list of {@link BibEntry} 3. Post-process fetched entries
  */
 public interface SearchBasedParserFetcher extends SearchBasedFetcher {
 
     /**
      * Constructs a URL based on the query.
+     *
      * @param query the search query
      */
     URL getURLForQuery(String query) throws URISyntaxException, MalformedURLException, FetcherException;
@@ -34,15 +32,13 @@ public interface SearchBasedParserFetcher extends SearchBasedFetcher {
 
     /**
      * Performs a cleanup of the fetched entry.
-     *
-     * Only systematic errors of the fetcher should be corrected here
-     * (i.e. if information is consistently contained in the wrong field or the wrong format)
-     * but not cosmetic issues which may depend on the user's taste (for example, LateX code vs HTML in the abstract).
-     *
-     * Try to reuse existing {@link Formatter} for the cleanup. For example,
-     * {@code new FieldFormatterCleanup(StandardField.TITLE, new RemoveBracesFormatter()).cleanup(entry);}
-     *
+     * <p>
+     * Only systematic errors of the fetcher should be corrected here (i.e. if information is consistently contained in the wrong field or the wrong format) but not cosmetic issues which may depend on the user's taste (for example, LateX code vs HTML in the abstract).
+     * <p>
+     * Try to reuse existing {@link Formatter} for the cleanup. For example, {@code new FieldFormatterCleanup(StandardField.TITLE, new RemoveBracesFormatter()).cleanup(entry);}
+     * <p>
      * By default, no cleanup is done.
+     *
      * @param entry the entry to be cleaned-up
      */
     default void doPostCleanup(BibEntry entry) {

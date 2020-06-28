@@ -3,6 +3,7 @@ package org.jabref.logic.importer.fetcher;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import org.jabref.logic.importer.FetcherException;
@@ -13,16 +14,19 @@ import org.jabref.model.entry.identifier.ArXivIdentifier;
 import org.jabref.model.entry.types.StandardEntryType;
 import org.jabref.testutils.category.FetcherTest;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @FetcherTest
-class ArXivTest {
+class ArXivTest implements SearchBasedFetcherCapabilityTest {
     private ArXiv finder;
     private BibEntry entry;
     private BibEntry sliceTheoremPaper;
@@ -218,5 +222,97 @@ class ArXivTest {
     @Test
     void searchWithHttpsUrlNotTrimmed() throws Exception {
         assertEquals(Optional.of(sliceTheoremPaper), finder.performSearchById("https : // arxiv . org / abs / 1405 . 2249 "));
+    }
+
+    @Test
+    @Override
+    public void authorSearch() throws FetcherException {
+        List<BibEntry> results = finder.performSearch("au:\"Tobias Diez\"");
+        assertFalse(results.isEmpty());
+        results.forEach(bibEntry -> {
+
+            String author = bibEntry.getField(StandardField.AUTHOR).orElse("");
+
+            // Some papers have other authors
+            Assertions.assertTrue(author.contains("Tobias Diez"));
+        });
+    }
+
+    /**
+     * @throws FetcherException TODO: find out the correct search parameter names
+     */
+    @Test
+    @Override
+    public void yearSearch() throws FetcherException {
+    }
+
+    /**
+     * @throws FetcherException TODO: find out the correct search parameter names
+     */
+    @Test
+    @Override
+    public void yearRangeSearch() throws FetcherException {
+
+    }
+
+    @Test
+    @Override
+    public void journalSearch() throws FetcherException {
+        List<BibEntry> results = finder.performSearch("jr: \"Journal of Geometry and Physics (2013)\"");
+        assertFalse(results.isEmpty());
+        results.forEach(bibEntry -> {
+
+            String journalTitle = bibEntry.getField(StandardField.JOURNALTITLE).orElse("");
+            // Throw away year and following information
+            journalTitle = journalTitle.replaceFirst(" \\(\\d\\d\\d\\d\\).*", "");
+            // Just check whether the returned entries contain the queried journal as journal title.
+            assertEquals("Journal of Geometry and Physics", journalTitle);
+        });
+    }
+
+    @Test
+    @Override
+    public void phraseSearch() throws FetcherException {
+        BibEntry expected = new BibEntry();
+        expected.setType(StandardEntryType.Article);
+        expected.setField(StandardField.AUTHOR, "Tobias Büscher and Angel L. Diez and Gerhard Gompper and Jens Elgeti");
+        expected.setField(StandardField.TITLE, "Instability and fingering of interfaces in growing tissue");
+        expected.setField(StandardField.DATE, "2020-03-10");
+        expected.setField(StandardField.ABSTRACT, "Interfaces in tissues are ubiquitous, both between tissue and environment as well as between populations of different cell types. The propagation of an interface can be driven mechanically. % e.g. by a difference in the respective homeostatic stress of the different cell types. Computer simulations of growing tissues are employed to study the stability of the interface between two tissues on a substrate. From a mechanical perspective, the dynamics and stability of this system is controlled mainly by four parameters of the respective tissues: (i) the homeostatic stress (ii) cell motility (iii) tissue viscosity and (iv) substrate friction. For propagation driven by a difference in homeostatic stress, the interface is stable for tissue-specific substrate friction even for very large differences of homeostatic stress; however, it becomes unstable above a critical stress difference when the tissue with the larger homeostatic stress has a higher viscosity. A small difference in directed bulk motility between the two tissues suffices to result in propagation with a stable interface, even for otherwise identical tissues. Larger differences in motility force, however, result in a finite-wavelength instability of the interface. Interestingly, the instability is apparently bound by nonlinear effects and the amplitude of the interface undulations only grows to a finite value in time.");
+        expected.setField(StandardField.EPRINT, "2003.04601");
+        expected.setField(StandardField.FILE, ":http\\://arxiv.org/pdf/2003.04601v1:PDF");
+        expected.setField(StandardField.EPRINTTYPE, "arXiv");
+        expected.setField(StandardField.EPRINTCLASS, "q-bio.TO");
+        expected.setField(StandardField.KEYWORDS, "q-bio.TO");
+
+        List<BibEntry> resultWithPhraseSearch = finder.performSearch("au:\"Tobias Diez\"");
+        List<BibEntry> resultWithOutPhraseSearch = finder.performSearch("au:Tobias Diez");
+        // Ensure that phrase search result is just a subset of the default search result
+        assertTrue(resultWithOutPhraseSearch.containsAll(resultWithPhraseSearch));
+        resultWithOutPhraseSearch.removeAll(resultWithPhraseSearch);
+
+        // There is only a single paper found by searching for Tobias Diez as author that is not authored by "Tobias Diez".
+        assertEquals(Collections.singletonList(expected), resultWithOutPhraseSearch);
+    }
+
+    @Test
+    @Override
+    public void authorAndTitleSearch() throws FetcherException {
+        BibEntry expected = new BibEntry();
+        expected.setType(StandardEntryType.Article);
+        expected.setField(StandardField.AUTHOR, "Tobias Büscher and Angel L. Diez and Gerhard Gompper and Jens Elgeti");
+        expected.setField(StandardField.TITLE, "Instability and fingering of interfaces in growing tissue");
+        expected.setField(StandardField.DATE, "2020-03-10");
+        expected.setField(StandardField.ABSTRACT, "Interfaces in tissues are ubiquitous, both between tissue and environment as well as between populations of different cell types. The propagation of an interface can be driven mechanically. % e.g. by a difference in the respective homeostatic stress of the different cell types. Computer simulations of growing tissues are employed to study the stability of the interface between two tissues on a substrate. From a mechanical perspective, the dynamics and stability of this system is controlled mainly by four parameters of the respective tissues: (i) the homeostatic stress (ii) cell motility (iii) tissue viscosity and (iv) substrate friction. For propagation driven by a difference in homeostatic stress, the interface is stable for tissue-specific substrate friction even for very large differences of homeostatic stress; however, it becomes unstable above a critical stress difference when the tissue with the larger homeostatic stress has a higher viscosity. A small difference in directed bulk motility between the two tissues suffices to result in propagation with a stable interface, even for otherwise identical tissues. Larger differences in motility force, however, result in a finite-wavelength instability of the interface. Interestingly, the instability is apparently bound by nonlinear effects and the amplitude of the interface undulations only grows to a finite value in time.");
+        expected.setField(StandardField.EPRINT, "2003.04601");
+        expected.setField(StandardField.FILE, ":http\\://arxiv.org/pdf/2003.04601v1:PDF");
+        expected.setField(StandardField.EPRINTTYPE, "arXiv");
+        expected.setField(StandardField.EPRINTCLASS, "q-bio.TO");
+        expected.setField(StandardField.KEYWORDS, "q-bio.TO");
+
+        List<BibEntry> result = finder.performSearch("au:\"Tobias Büscher\" AND ti:\"Instability and fingering of interfaces\"");
+
+        // There is only one paper authored by Tobias Büschler with that phrase in the title
+        assertEquals(Collections.singletonList(expected), result);
     }
 }

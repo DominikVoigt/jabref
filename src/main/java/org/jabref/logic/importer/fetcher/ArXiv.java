@@ -158,7 +158,7 @@ public class ArXiv implements FulltextFetcher, SearchBasedFetcher, IdBasedFetche
     }
 
     private List<ArXivEntry> queryApi(String searchQuery, List<ArXivIdentifier> ids, int start, int maxResults)
-        throws FetcherException {
+            throws FetcherException {
         Document result = callApi(searchQuery, ids, start, maxResults);
         List<Node> entries = XMLUtil.asList(result.getElementsByTagName("entry"));
 
@@ -167,11 +167,8 @@ public class ArXiv implements FulltextFetcher, SearchBasedFetcher, IdBasedFetche
 
     /**
      * Queries the API.
-     *
-     * If only {@code searchQuery} is given, then the API will return results for each article that matches the query.
-     * If only {@code ids} is given, then the API will return results for each article in the list.
-     * If both {@code searchQuery} and {@code ids} are given, then the API will return each article in
-     * {@code ids} that matches {@code searchQuery}. This allows the API to act as a results filter.
+     * <p>
+     * If only {@code searchQuery} is given, then the API will return results for each article that matches the query. If only {@code ids} is given, then the API will return results for each article in the list. If both {@code searchQuery} and {@code ids} are given, then the API will return each article in {@code ids} that matches {@code searchQuery}. This allows the API to act as a results filter.
      *
      * @param searchQuery the search query used to find articles;
      *                    <a href="http://arxiv.org/help/api/user-manual#query_details">details</a>

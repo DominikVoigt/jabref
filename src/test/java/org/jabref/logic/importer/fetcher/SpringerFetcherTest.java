@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import org.jabref.logic.importer.FetcherException;
 import org.jabref.model.entry.BibEntry;
 import org.jabref.model.entry.field.StandardField;
 import org.jabref.model.entry.types.StandardEntryType;
@@ -17,7 +18,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @FetcherTest
-class SpringerFetcherTest {
+class SpringerFetcherTest implements SearchBasedFetcherCapabilityTest {
 
     SpringerFetcher fetcher;
 
@@ -77,5 +78,35 @@ class SpringerFetcherTest {
     @Test
     void searchByEmptyQueryFindsNothing() throws Exception {
         assertEquals(Collections.emptyList(), fetcher.performSearch(""));
+    }
+
+    @Override
+    public void authorSearch() throws FetcherException {
+
+    }
+
+    @Override
+    public void yearSearch() throws FetcherException {
+
+    }
+
+    @Override
+    public void yearRangeSearch() throws FetcherException {
+
+    }
+
+    @Override
+    public void journalSearch() throws FetcherException {
+
+    }
+
+    @Override
+    public void phraseSearch() throws FetcherException {
+
+    }
+
+    @Override
+    public void authorAndTitleSearch() throws FetcherException {
+
     }
 }

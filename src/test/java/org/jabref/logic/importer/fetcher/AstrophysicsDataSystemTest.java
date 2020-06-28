@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.jabref.logic.bibtex.FieldContentFormatterPreferences;
+import org.jabref.logic.importer.FetcherException;
 import org.jabref.logic.importer.ImportFormatPreferences;
 import org.jabref.model.entry.BibEntry;
 import org.jabref.model.entry.field.StandardField;
@@ -20,7 +21,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @FetcherTest
-public class AstrophysicsDataSystemTest {
+public class AstrophysicsDataSystemTest implements SearchBasedFetcherCapabilityTest {
 
     private AstrophysicsDataSystem fetcher;
     private BibEntry diezSliceTheoremEntry;
@@ -197,5 +198,35 @@ public class AstrophysicsDataSystemTest {
     public void testPerformSearchByLuceyPaulEntry() throws Exception {
         Optional<BibEntry> fetchedEntry = fetcher.performSearchById("2000JGR...10520297L");
         assertEquals(Optional.of(luceyPaulEntry), fetchedEntry);
+    }
+
+    @Override
+    public void authorSearch() throws FetcherException {
+
+    }
+
+    @Override
+    public void yearSearch() throws FetcherException {
+
+    }
+
+    @Override
+    public void yearRangeSearch() throws FetcherException {
+
+    }
+
+    @Override
+    public void journalSearch() throws FetcherException {
+
+    }
+
+    @Override
+    public void phraseSearch() throws FetcherException {
+
+    }
+
+    @Override
+    public void authorAndTitleSearch() throws FetcherException {
+
     }
 }

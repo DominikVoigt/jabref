@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.jabref.logic.bibtex.FieldContentFormatterPreferences;
+import org.jabref.logic.importer.FetcherException;
 import org.jabref.logic.importer.ImportFormatPreferences;
 import org.jabref.model.entry.BibEntry;
 import org.jabref.model.entry.field.StandardField;
@@ -21,7 +22,7 @@ import static org.mockito.Mockito.when;
 
 @FetcherTest
 @Disabled("ACM endpoint does not work, thus the fetcher does not work at all. See https://github.com/JabRef/jabref/issues/5804 for details.")
-class ACMPortalFetcherTest {
+class ACMPortalFetcherTest implements SearchBasedFetcherCapabilityTest {
     ACMPortalFetcher fetcher;
 
     @BeforeEach
@@ -53,5 +54,35 @@ class ACMPortalFetcherTest {
 
         List<BibEntry> fetchedEntries = fetcher.performSearch("jabref architectural churn");
         assertEquals(Collections.singletonList(expected), fetchedEntries);
+    }
+
+    @Override
+    public void authorSearch() throws FetcherException {
+
+    }
+
+    @Override
+    public void yearSearch() throws FetcherException {
+
+    }
+
+    @Override
+    public void yearRangeSearch() throws FetcherException {
+
+    }
+
+    @Override
+    public void journalSearch() throws FetcherException {
+
+    }
+
+    @Override
+    public void phraseSearch() throws FetcherException {
+
+    }
+
+    @Override
+    public void authorAndTitleSearch() throws FetcherException {
+
     }
 }

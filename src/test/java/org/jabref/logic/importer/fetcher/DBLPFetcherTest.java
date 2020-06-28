@@ -20,7 +20,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @FetcherTest
-public class DBLPFetcherTest {
+public class DBLPFetcherTest implements SearchBasedFetcherCapabilityTest {
 
     private DBLPFetcher dblpFetcher;
     private BibEntry entry;
@@ -67,5 +67,35 @@ public class DBLPFetcherTest {
     @Test
     public void findNothing() throws Exception {
         assertEquals(Collections.emptyList(), dblpFetcher.performSearch(""));
+    }
+
+    @Override
+    public void authorSearch() throws FetcherException {
+
+    }
+
+    @Override
+    public void yearSearch() throws FetcherException {
+
+    }
+
+    @Override
+    public void yearRangeSearch() throws FetcherException {
+
+    }
+
+    @Override
+    public void journalSearch() throws FetcherException {
+
+    }
+
+    @Override
+    public void phraseSearch() throws FetcherException {
+
+    }
+
+    @Override
+    public void authorAndTitleSearch() throws FetcherException {
+
     }
 }

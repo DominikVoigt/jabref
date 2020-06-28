@@ -19,7 +19,7 @@ import org.jabref.logic.help.HelpFile;
 import org.jabref.logic.importer.FulltextFetcher;
 import org.jabref.logic.importer.ImportFormatPreferences;
 import org.jabref.logic.importer.Parser;
-import org.jabref.logic.importer.SearchBasedParserFetcher;
+import org.jabref.logic.importer.RawFetcher;
 import org.jabref.logic.net.URLDownload;
 import org.jabref.logic.util.BuildInfo;
 import org.jabref.logic.util.OS;
@@ -36,13 +36,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Class for finding PDF URLs for entries on IEEE
- * Will first look for URLs of the type https://ieeexplore.ieee.org/stamp/stamp.jsp?[tp=&]arnumber=...
- * If not found, will resolve the DOI, if it starts with 10.1109, and try to find a similar link on the HTML page
+ * Class for finding PDF URLs for entries on IEEE Will first look for URLs of the type https://ieeexplore.ieee.org/stamp/stamp.jsp?[tp=&]arnumber=... If not found, will resolve the DOI, if it starts with 10.1109, and try to find a similar link on the HTML page
  *
  * @implNote <a href="https://developer.ieee.org/docs">API documentation</a>
  */
-public class IEEE implements FulltextFetcher, SearchBasedParserFetcher {
+public class IEEE implements FulltextFetcher, RawFetcher {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IEEE.class);
     private static final String STAMP_BASE_STRING_DOCUMENT = "/stamp/stamp.jsp?tp=&arnumber=";
@@ -203,7 +201,6 @@ public class IEEE implements FulltextFetcher, SearchBasedParserFetcher {
         uriBuilder.addParameter("querytext", query);
 
         URLDownload.bypassSSLVerification();
-
         return uriBuilder.build().toURL();
     }
 
@@ -235,5 +232,10 @@ public class IEEE implements FulltextFetcher, SearchBasedParserFetcher {
     @Override
     public Optional<HelpFile> getHelpPage() {
         return Optional.of(HelpFile.FETCHER_IEEEXPLORE);
+    }
+
+    @Override
+    public URLDownload getRawUrlDownload(String urlParameters) throws MalformedURLException {
+        return new URLDownload(String.format("https://ieeexploreapi.ieee.org/api/v1/search/articles?apikey=%s&%s", API_KEY, urlParameters));
     }
 }

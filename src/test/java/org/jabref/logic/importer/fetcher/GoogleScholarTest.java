@@ -23,7 +23,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @FetcherTest
-class GoogleScholarTest {
+class GoogleScholarTest implements SearchBasedFetcherCapabilityTest {
 
     private GoogleScholar finder;
     private BibEntry entry;
@@ -78,5 +78,35 @@ class GoogleScholarTest {
         List<BibEntry> foundEntries = finder.performSearch("random test string");
 
         assertEquals(20, foundEntries.size());
+    }
+
+    @Override
+    public void authorSearch() throws FetcherException {
+
+    }
+
+    @Override
+    public void yearSearch() throws FetcherException {
+
+    }
+
+    @Override
+    public void yearRangeSearch() throws FetcherException {
+
+    }
+
+    @Override
+    public void journalSearch() throws FetcherException {
+
+    }
+
+    @Override
+    public void phraseSearch() throws FetcherException {
+
+    }
+
+    @Override
+    public void authorAndTitleSearch() throws FetcherException {
+
     }
 }
