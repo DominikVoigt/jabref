@@ -28,7 +28,7 @@ public interface RawFetcher extends SearchBasedParserFetcher {
             urlParameters = urlParameters.substring(1);
         }
 
-        // Replace white spaces with +
+        // Replace white spaces by + to form a valid URL parameter
         try (InputStream stream = getRawUrlDownload(urlParameters.replace(" ", "+")).asInputStream()) {
             List<BibEntry> fetchedEntries = getParser().parseEntries(stream);
 
