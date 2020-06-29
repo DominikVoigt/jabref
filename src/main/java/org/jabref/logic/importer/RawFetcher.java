@@ -25,7 +25,7 @@ public interface RawFetcher extends SearchBasedParserFetcher {
             return Collections.emptyList();
         }
         if (urlParameters.startsWith("?")) {
-            urlParameters = urlParameters.replaceFirst("\\?", "");
+            urlParameters = urlParameters.substring(1);
         }
 
         // Replace white spaces with +
