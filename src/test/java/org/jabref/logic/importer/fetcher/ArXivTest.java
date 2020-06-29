@@ -16,6 +16,7 @@ import org.jabref.testutils.category.FetcherTest;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -238,21 +239,13 @@ class ArXivTest implements SearchBasedFetcherCapabilityTest {
         });
     }
 
-    /**
-     * TODO: find out the correct search parameter names
-     *
-     * @throws FetcherException
-     */
+    @Disabled("Find out correct search prefixes")
     @Test
     @Override
     public void yearSearch() throws Exception {
     }
 
-    /**
-     * TODO: find out the correct search parameter names
-     *
-     * @throws FetcherException
-     */
+    @Disabled("Find out correct search prefixes")
     @Test
     @Override
     public void yearRangeSearch() throws Exception {
