@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import org.jabref.logic.importer.FetcherException;
 import org.jabref.model.entry.BibEntry;
 import org.jabref.model.entry.field.StandardField;
 import org.jabref.model.entry.types.StandardEntryType;
@@ -81,32 +80,32 @@ class SpringerFetcherTest implements SearchBasedFetcherCapabilityTest {
     }
 
     @Override
-    public void authorSearch() throws FetcherException {
+    public void authorSearch() throws Exception {
 
     }
 
     @Override
-    public void yearSearch() throws FetcherException {
+    public void yearSearch() throws Exception {
 
     }
 
     @Override
-    public void yearRangeSearch() throws FetcherException {
+    public void yearRangeSearch() throws Exception {
 
     }
 
     @Override
-    public void journalSearch() throws FetcherException {
+    public void journalSearch() throws Exception {
 
     }
 
     @Override
-    public void phraseSearch() throws FetcherException {
+    public void phraseSearch() throws Exception {
 
     }
 
     @Override
-    public void authorAndTitleSearch() throws FetcherException {
+    public void authorAndTitleSearch() throws Exception {
 
     }
 }

@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.jabref.logic.bibtex.FieldContentFormatterPreferences;
-import org.jabref.logic.importer.FetcherException;
 import org.jabref.logic.importer.ImportFormatPreferences;
 import org.jabref.model.entry.BibEntry;
 import org.jabref.model.entry.field.StandardField;
@@ -56,32 +55,32 @@ class ZbMATHTest implements SearchBasedFetcherCapabilityTest {
     }
 
     @Override
-    public void authorSearch() throws FetcherException {
+    public void authorSearch() throws Exception {
 
     }
 
     @Override
-    public void yearSearch() throws FetcherException {
+    public void yearSearch() throws Exception {
 
     }
 
     @Override
-    public void yearRangeSearch() throws FetcherException {
+    public void yearRangeSearch() throws Exception {
 
     }
 
     @Override
-    public void journalSearch() throws FetcherException {
+    public void journalSearch() throws Exception {
 
     }
 
     @Override
-    public void phraseSearch() throws FetcherException {
+    public void phraseSearch() throws Exception {
 
     }
 
     @Override
-    public void authorAndTitleSearch() throws FetcherException {
+    public void authorAndTitleSearch() throws Exception {
 
     }
 }

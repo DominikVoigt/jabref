@@ -10,29 +10,31 @@ import org.jabref.logic.net.URLDownload;
 import org.jabref.model.entry.BibEntry;
 import org.jabref.model.strings.StringUtil;
 
+/**
+ * This interface allows SearchBasedParserFetcher fetchers that implement it to test their corresponding library APIs for their advanced search options e.g. fielded search.
+ */
 public interface RawFetcher extends SearchBasedParserFetcher {
 
     /**
-     * Send queries with arbitrary url parameters.
-     * <p>
-     * This is used to test the library APIs for their advanced search options e.g. fielded search.
+     * This method is used to send queries with arbitrary url parameters. This method is necessary as the performSearch method of the SearchBasedParserFetcher does not support arbitrary url parameters.
      *
      * @param urlParameters The given URL parameters as string should start with "?"
      * @return result of the query with the given URL parameters
+     * @throws FetcherException
+     * @throws MalformedURLException
      */
-    default List<BibEntry> performRawSearch(String urlParameters) throws FetcherException, IllegalArgumentException {
+    default List<BibEntry> performRawSearch(String urlParameters) throws FetcherException, MalformedURLException {
         if (StringUtil.isBlank(urlParameters)) {
             return Collections.emptyList();
         }
         if (urlParameters.startsWith("?")) {
-            urlParameters = urlParameters.replaceFirst("\\?", "");
+            urlParameters = urlParameters.substring(1);
         }
 
-        // Replace white spaces with +
+        // Replace white spaces with + to form a valid URL. No full URL encoding as it would encode "&" signs used for url parameters.
         try (InputStream stream = getRawUrlDownload(urlParameters.replace(" ", "+")).asInputStream()) {
             List<BibEntry> fetchedEntries = getParser().parseEntries(stream);
 
-            // Post-cleanup
             fetchedEntries.forEach(this::doPostCleanup);
 
             return fetchedEntries;
