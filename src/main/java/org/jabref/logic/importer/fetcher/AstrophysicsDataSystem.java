@@ -25,7 +25,7 @@ import org.jabref.logic.importer.IdBasedParserFetcher;
 import org.jabref.logic.importer.ImportFormatPreferences;
 import org.jabref.logic.importer.ParseException;
 import org.jabref.logic.importer.Parser;
-import org.jabref.logic.importer.RawFetcher;
+import org.jabref.logic.importer.SearchBasedParserFetcher;
 import org.jabref.logic.importer.fileformat.BibtexParser;
 import org.jabref.logic.net.URLDownload;
 import org.jabref.logic.util.BuildInfo;
@@ -44,7 +44,7 @@ import org.apache.http.client.utils.URIBuilder;
 /**
  * Fetches data from the SAO/NASA Astrophysics Data System (https://ui.adsabs.harvard.edu/)
  */
-public class AstrophysicsDataSystem implements IdBasedParserFetcher, RawFetcher, EntryBasedParserFetcher {
+public class AstrophysicsDataSystem implements IdBasedParserFetcher, SearchBasedParserFetcher, EntryBasedParserFetcher {
 
     private static final String API_SEARCH_URL = "https://api.adsabs.harvard.edu/v1/search/query";
     private static final String API_EXPORT_URL = "https://api.adsabs.harvard.edu/v1/export/bibtexabs";
@@ -283,10 +283,5 @@ public class AstrophysicsDataSystem implements IdBasedParserFetcher, RawFetcher,
         } catch (ParseException e) {
             throw new FetcherException("An internal parser error occurred", e);
         }
-    }
-
-    @Override
-    public URLDownload getRawUrlDownload(String urlParameters) throws MalformedURLException {
-        return new URLDownload(String.format("%s?%s", API_SEARCH_URL, urlParameters));
     }
 }

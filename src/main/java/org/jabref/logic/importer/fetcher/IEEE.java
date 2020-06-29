@@ -235,7 +235,13 @@ public class IEEE implements FulltextFetcher, RawFetcher {
     }
 
     @Override
-    public URLDownload getRawUrlDownload(String urlParameters) throws MalformedURLException {
-        return new URLDownload(String.format("https://ieeexploreapi.ieee.org/api/v1/search/articles?apikey=%s&%s", API_KEY, urlParameters));
+    public URLDownload getRawUrlDownload(String anyField, String author, String title, String fromYear, String toYear, String journal) throws MalformedURLException, URISyntaxException {
+        URIBuilder uriBuilder = new URIBuilder("https://ieeexploreapi.ieee.org/api/v1/search/articles");
+        uriBuilder.addParameter("apikey", API_KEY);
+        uriBuilder.addParameter("querytext", anyField);
+        // TODO: Add other parameters author, title....
+
+        URLDownload.bypassSSLVerification();
+        return new URLDownload(uriBuilder.build().toURL());
     }
 }

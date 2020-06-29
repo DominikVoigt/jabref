@@ -13,8 +13,7 @@ import java.util.stream.Collectors;
 import org.jabref.logic.help.HelpFile;
 import org.jabref.logic.importer.FetcherException;
 import org.jabref.logic.importer.Parser;
-import org.jabref.logic.importer.RawFetcher;
-import org.jabref.logic.net.URLDownload;
+import org.jabref.logic.importer.SearchBasedParserFetcher;
 import org.jabref.logic.util.BuildInfo;
 import org.jabref.logic.util.OS;
 import org.jabref.model.entry.BibEntry;
@@ -35,7 +34,7 @@ import org.slf4j.LoggerFactory;
  *
  * @implNote see <a href="https://dev.springernature.com/">API documentation</a> for more details
  */
-public class SpringerFetcher implements RawFetcher {
+public class SpringerFetcher implements SearchBasedParserFetcher {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringerFetcher.class);
 
@@ -183,10 +182,5 @@ public class SpringerFetcher implements RawFetcher {
 
             return entries;
         };
-    }
-
-    @Override
-    public URLDownload getRawUrlDownload(String urlParameters) throws MalformedURLException {
-        return new URLDownload(String.format("%s?%s", API_URL, urlParameters));
     }
 }

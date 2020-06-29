@@ -207,4 +207,50 @@ public class GoogleScholar implements FulltextFetcher, SearchBasedFetcher {
             throw new FetcherException("Cookie configuration for Google Scholar failed.", e);
         }
     }
+
+    /**
+     * This method is used to send queries with advanced url parameters. This method is necessary as the performSearch method does not support the required url parameters.
+     *
+     * @param anyField Search string for any field
+     * @param author   Search string for author field
+     * @param title    Search string for title field
+     * @param fromYear Search string for year search (lower bound)
+     * @param toYear   Search string for year search (upper bound)
+     * @param journal  Search string for journal field search
+     * @return result of the query with the given URL parameters
+     * @throws FetcherException
+     */
+    List<BibEntry> performRawSearch(String anyField, String author, String title, String fromYear, String toYear, String journal) throws FetcherException {
+        try {
+            obtainAndModifyCookie();
+            List<BibEntry> foundEntries = new ArrayList<>(10);
+
+            URIBuilder uriBuilder = new URIBuilder(BASIC_SEARCH_URL);
+            uriBuilder.addParameter("hl", "en");
+            uriBuilder.addParameter("btnG", "Search");
+            uriBuilder.addParameter("q", anyField);
+            // TODO: Add other parameters author, title....
+
+            addHitsFromQuery(foundEntries, uriBuilder.toString());
+
+            if (foundEntries.size() == 10) {
+                uriBuilder.addParameter("start", "10");
+                addHitsFromQuery(foundEntries, uriBuilder.toString());
+            }
+
+            return foundEntries;
+        } catch (URISyntaxException e) {
+            throw new FetcherException("Error while fetching from " + getName(), e);
+        } catch (IOException e) {
+            // if there are too much requests from the same IP adress google is answering with a 503 and redirecting to a captcha challenge
+            // The caught IOException looks for example like this:
+            // java.io.IOException: Server returned HTTP response code: 503 for URL: https://ipv4.google.com/sorry/index?continue=https://scholar.google.com/scholar%3Fhl%3Den%26btnG%3DSearch%26q%3Dbpmn&hl=en&q=CGMSBI0NBDkYuqy9wAUiGQDxp4NLQCWbIEY1HjpH5zFJhv4ANPGdWj0
+            if (e.getMessage().contains("Server returned HTTP response code: 503 for URL")) {
+                throw new FetcherException("Fetching from Google Scholar failed.",
+                        Localization.lang("This might be caused by reaching the traffic limitation of Google Scholar (see 'Help' for details)."), e);
+            } else {
+                throw new FetcherException("Error while fetching from " + getName(), e);
+            }
+        }
+    }
 }
