@@ -12,8 +12,8 @@ import org.jabref.model.entry.BibEntry;
 import org.jabref.model.strings.StringUtil;
 
 /**
- * This interface allows SearchBasedParserFetcher fetchers that implement it to test their corresponding
- * library APIs for their advanced search options e.g. fielded search.
+ * This interface allows SearchBasedParserFetcher fetchers to test their corresponding
+ * library APIs for their advanced search options, e.g. search in the "title" field.
  */
 public interface RawFetcher extends SearchBasedParserFetcher {
 
