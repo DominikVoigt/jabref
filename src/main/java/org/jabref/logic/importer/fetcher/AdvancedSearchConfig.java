@@ -9,11 +9,11 @@ public class AdvancedSearchConfig {
     private final String defaultField;
     private final String author;
     private final String title;
-    private final String fromYear;
-    private final String toYear;
+    private final int fromYear;
+    private final int toYear;
     private final String journal;
 
-    AdvancedSearchConfig(String defaultField, String author, String title, String fromYear, String toYear, String journal) {
+    AdvancedSearchConfig(String defaultField, String author, String title, int fromYear, int toYear, String journal) {
         this.defaultField = defaultField;
         this.author = author;
         this.title = title;
@@ -41,11 +41,11 @@ public class AdvancedSearchConfig {
         return title;
     }
 
-    public String getFromYear() {
+    public int getFromYear() {
         return fromYear;
     }
 
-    public String getToYear() {
+    public int getToYear() {
         return toYear;
     }
 
@@ -66,16 +66,14 @@ public class AdvancedSearchConfig {
         private String defaultField;
         private String author;
         private String title;
-        private String fromYear;
-        private String toYear;
+        private int fromYear;
+        private int toYear;
         private String journal;
 
         public AdvancedSearchConfigBuilder() {
             defaultField = "";
             author = "";
             title = "";
-            fromYear = "";
-            toYear = "";
             journal = "";
         }
 
@@ -110,7 +108,7 @@ public class AdvancedSearchConfig {
          * @param fromYear Search string for year search (lower bound)
          * @return Builder instance
          */
-        public AdvancedSearchConfigBuilder fromYear(String fromYear) {
+        public AdvancedSearchConfigBuilder fromYear(int fromYear) {
             this.fromYear = fromYear;
             return this;
         }
@@ -119,7 +117,7 @@ public class AdvancedSearchConfig {
          * @param toYear Search string for year search (upper bound)
          * @return Builder instance
          */
-        public AdvancedSearchConfigBuilder toYear(String toYear) {
+        public AdvancedSearchConfigBuilder toYear(int toYear) {
             this.toYear = toYear;
             return this;
         }
