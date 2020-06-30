@@ -85,9 +85,9 @@ public class DBLPFetcher implements SearchBasedParserFetcher, RawFetcher {
     }
 
     @Override
-    public URLDownload getRawURLDownload(String anyField, String author, String title, String fromYear, String toYear, String journal) throws URISyntaxException, MalformedURLException {
+    public URLDownload getRawURLDownload(AdvancedSearchConfig advancedSearchConfig) throws URISyntaxException, MalformedURLException {
         URIBuilder uriBuilder = new URIBuilder(BASIC_SEARCH_URL);
-        uriBuilder.addParameter("q", anyField);
+        uriBuilder.addParameter("q", advancedSearchConfig.getDefaultField());
         uriBuilder.addParameter("h", String.valueOf(100)); // number of hits
         uriBuilder.addParameter("c", String.valueOf(0)); // no need for auto-completion
         uriBuilder.addParameter("f", String.valueOf(0)); // "from", index of first hit to download

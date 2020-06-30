@@ -58,9 +58,9 @@ public class ACMPortalFetcher implements SearchBasedParserFetcher, RawFetcher {
     }
 
     @Override
-    public URLDownload getRawURLDownload(String anyField, String author, String title, String fromYear, String toYear, String journal) throws MalformedURLException, URISyntaxException {
+    public URLDownload getRawURLDownload(AdvancedSearchConfig advancedSearchConfig) throws MalformedURLException, URISyntaxException {
         URIBuilder uriBuilder = new URIBuilder(SEARCH_URL);
-        uriBuilder.addParameter("query", createQueryString(anyField)); // Search all fields
+        uriBuilder.addParameter("query", createQueryString(advancedSearchConfig.getDefaultField())); // Search all fields
         uriBuilder.addParameter("within", "owners.owner=GUIDE"); // Search within the ACM Guide to Computing Literature (encompasses the ACM Full-Text Collection)
         uriBuilder.addParameter("expformat", "bibtex"); // BibTeX format
         return new URLDownload(uriBuilder.build().toURL());

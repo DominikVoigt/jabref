@@ -7,9 +7,9 @@ import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.List;
 
+import org.jabref.logic.importer.fetcher.AdvancedSearchConfig;
 import org.jabref.logic.net.URLDownload;
 import org.jabref.model.entry.BibEntry;
-import org.jabref.model.strings.StringUtil;
 
 /**
  * This interface allows SearchBasedParserFetcher fetchers to test their corresponding
@@ -22,21 +22,14 @@ public interface RawFetcher extends SearchBasedParserFetcher {
      * This method is necessary as the performSearch method does not support certain URL parameters that are used for
      * fielded search, such as a title, author, or year parameter.
      *
-     * @param anyField Search string for any field
-     * @param author   Search string for author field
-     * @param title    Search string for title field
-     * @param fromYear Search string for year search (lower bound)
-     * @param toYear   Search string for year search (upper bound)
-     * @param journal  Search string for journal field search
-     * @return result of the query with the given URL parameters
-     * @throws FetcherException if the fetcher that is performing the query encounters a problem
+     * @param advancedSearchConfig the search config defining all fielded search parameters
      */
-    default List<BibEntry> performRawSearch(String anyField, String author, String title, String fromYear, String toYear, String journal) throws FetcherException {
-        if (StringUtil.isBlank(anyField) && StringUtil.isBlank(title) && StringUtil.isBlank(author) && StringUtil.isBlank(journal)) {
+    default List<BibEntry> performRawSearch(AdvancedSearchConfig advancedSearchConfig) throws FetcherException {
+        if (advancedSearchConfig.isEmpty()) {
             return Collections.emptyList();
         }
         // Replace white spaces with + to form valid URL parameters. No full URL encoding as it would encode "&" signs used for url parameters.
-        try (InputStream stream = getRawURLDownload(anyField, author, title, fromYear, toYear, journal).asInputStream()) {
+        try (InputStream stream = getRawURLDownload(advancedSearchConfig).asInputStream()) {
             List<BibEntry> fetchedEntries = getParser().parseEntries(stream);
             fetchedEntries.forEach(this::doPostCleanup);
             return fetchedEntries;
@@ -53,13 +46,8 @@ public interface RawFetcher extends SearchBasedParserFetcher {
     /**
      * TODO: Implement this with all parameters in all implementing classes.
      *
-     * @param anyField Search string for any field
-     * @param author   Search string for author field
-     * @param title    Search string for title field
-     * @param fromYear Search string for year search (lower bound)
-     * @param toYear   Search string for year search (upper bound)
-     * @param journal  Search string for journal field search
+     * @param advancedSearchConfig the search config defining all fielded search parameters
      * @throws MalformedURLException Thrown if the given parameters are not formatted correctly.
      */
-    URLDownload getRawURLDownload(String anyField, String author, String title, String fromYear, String toYear, String journal) throws MalformedURLException, URISyntaxException;
+    URLDownload getRawURLDownload(AdvancedSearchConfig advancedSearchConfig) throws MalformedURLException, URISyntaxException;
 }
