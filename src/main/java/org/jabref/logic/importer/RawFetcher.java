@@ -17,7 +17,8 @@ import org.jabref.model.strings.StringUtil;
 public interface RawFetcher extends SearchBasedParserFetcher {
 
     /**
-     * This method is used to send queries with advanced url parameters. This method is necessary as the performSearch method does not support the required url parameters.
+     * This method is used to send queries with advanced url parameters.
+     * This method is necessary as the performSearch method does not support the required url parameters.
      *
      * @param anyField Search string for any field
      * @param author   Search string for author field
