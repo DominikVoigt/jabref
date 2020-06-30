@@ -15,7 +15,7 @@ plugins {
     id 'me.champeau.gradle.jmh' version '0.5.0'
     id 'com.github.ben-manes.versions' version '0.28.0'
     id 'org.javamodularity.moduleplugin' version '1.5.0'
-    id 'org.openjfx.javafxplugin' version '0.0.8'
+    id 'org.openjfx.javafxplugin' version '0.0.9'
     id 'org.beryx.jlink' version '2.20.0'
 
     // nicer test outputs during running and completion
@@ -138,7 +138,7 @@ dependencies {
     antlr4 'org.antlr:antlr4:4.8-1'
     implementation 'org.antlr:antlr4-runtime:4.8-1'
 
-    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.6.0'
+    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.6.1'
 
     implementation 'org.postgresql:postgresql:42.2.14'
 
@@ -167,7 +167,7 @@ dependencies {
     implementation 'org.controlsfx:controlsfx:11.0.1'
 
     implementation 'org.jsoup:jsoup:1.13.1'
-    implementation 'com.konghq:unirest-java:3.7.04'
+    implementation 'com.konghq:unirest-java:3.8.00'
 
     implementation 'org.slf4j:slf4j-api:2.0.0-alpha1'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-jcl', version: '3.0.0-SNAPSHOT'
@@ -196,12 +196,12 @@ dependencies {
     implementation 'com.vladsch.flexmark:flexmark-ext-gfm-strikethrough:0.62.2'
     implementation 'com.vladsch.flexmark:flexmark-ext-gfm-tasklist:0.62.2'
 
-    testImplementation 'io.github.classgraph:classgraph:4.8.86'
+    testImplementation 'io.github.classgraph:classgraph:4.8.87'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.6.2'
     testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.6.2'
     testImplementation 'org.junit.platform:junit-platform-launcher:1.6.2'
 
-    testImplementation 'net.bytebuddy:byte-buddy-parent:1.10.12'
+    testImplementation 'net.bytebuddy:byte-buddy-parent:1.10.13'
     testRuntime group: 'org.apache.logging.log4j', name: 'log4j-core', version: '3.0.0-SNAPSHOT'
     testRuntime group: 'org.apache.logging.log4j', name: 'log4j-jul', version: '3.0.0-SNAPSHOT'
     testImplementation 'org.mockito:mockito-core:3.3.3'
@@ -212,7 +212,7 @@ dependencies {
     testImplementation "org.testfx:testfx-junit5:4.0.17-alpha-SNAPSHOT"
     testImplementation "org.hamcrest:hamcrest-library:2.2"
 
-    checkstyle 'com.puppycrawl.tools:checkstyle:8.33'
+    checkstyle 'com.puppycrawl.tools:checkstyle:8.34'
     xjc group: 'org.glassfish.jaxb', name: 'jaxb-xjc', version: '2.3.3'
     jython 'org.python:jython-standalone:2.7.2'
 }
