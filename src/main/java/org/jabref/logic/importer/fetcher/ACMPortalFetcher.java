@@ -11,13 +11,14 @@ import org.jabref.logic.importer.FetcherException;
 import org.jabref.logic.importer.ImportFormatPreferences;
 import org.jabref.logic.importer.Parser;
 import org.jabref.logic.importer.RawFetcher;
+import org.jabref.logic.importer.SearchBasedParserFetcher;
 import org.jabref.logic.importer.fileformat.BibtexParser;
 import org.jabref.logic.net.URLDownload;
 import org.jabref.model.util.DummyFileUpdateMonitor;
 
 import org.apache.http.client.utils.URIBuilder;
 
-public class ACMPortalFetcher implements RawFetcher {
+public class ACMPortalFetcher implements SearchBasedParserFetcher, RawFetcher {
 
     private static final String SEARCH_URL = "https://dl.acm.org/exportformats_search.cfm";
 
@@ -57,7 +58,11 @@ public class ACMPortalFetcher implements RawFetcher {
     }
 
     @Override
-    public URLDownload getRawUrlDownload(String urlParameters) throws MalformedURLException {
-        return new URLDownload(String.format("%s?%s", SEARCH_URL, urlParameters));
+    public URLDownload getRawURLDownload(String anyField, String author, String title, String fromYear, String toYear, String journal) throws MalformedURLException, URISyntaxException {
+        URIBuilder uriBuilder = new URIBuilder(SEARCH_URL);
+        uriBuilder.addParameter("query", createQueryString(anyField)); // Search all fields
+        uriBuilder.addParameter("within", "owners.owner=GUIDE"); // Search within the ACM Guide to Computing Literature (encompasses the ACM Full-Text Collection)
+        uriBuilder.addParameter("expformat", "bibtex"); // BibTeX format
+        return new URLDownload(uriBuilder.build().toURL());
     }
 }

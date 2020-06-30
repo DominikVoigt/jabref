@@ -20,6 +20,7 @@ import org.jabref.logic.importer.FulltextFetcher;
 import org.jabref.logic.importer.ImportFormatPreferences;
 import org.jabref.logic.importer.Parser;
 import org.jabref.logic.importer.RawFetcher;
+import org.jabref.logic.importer.SearchBasedParserFetcher;
 import org.jabref.logic.net.URLDownload;
 import org.jabref.logic.util.BuildInfo;
 import org.jabref.logic.util.OS;
@@ -40,7 +41,7 @@ import org.slf4j.LoggerFactory;
  *
  * @implNote <a href="https://developer.ieee.org/docs">API documentation</a>
  */
-public class IEEE implements FulltextFetcher, RawFetcher {
+public class IEEE implements FulltextFetcher, SearchBasedParserFetcher, RawFetcher {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IEEE.class);
     private static final String STAMP_BASE_STRING_DOCUMENT = "/stamp/stamp.jsp?tp=&arnumber=";
@@ -235,7 +236,7 @@ public class IEEE implements FulltextFetcher, RawFetcher {
     }
 
     @Override
-    public URLDownload getRawUrlDownload(String anyField, String author, String title, String fromYear, String toYear, String journal) throws MalformedURLException, URISyntaxException {
+    public URLDownload getRawURLDownload(String anyField, String author, String title, String fromYear, String toYear, String journal) throws MalformedURLException, URISyntaxException {
         URIBuilder uriBuilder = new URIBuilder("https://ieeexploreapi.ieee.org/api/v1/search/articles");
         uriBuilder.addParameter("apikey", API_KEY);
         uriBuilder.addParameter("querytext", anyField);

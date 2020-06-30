@@ -14,6 +14,7 @@ import org.jabref.logic.importer.FetcherException;
 import org.jabref.logic.importer.ImportFormatPreferences;
 import org.jabref.logic.importer.Parser;
 import org.jabref.logic.importer.RawFetcher;
+import org.jabref.logic.importer.SearchBasedParserFetcher;
 import org.jabref.logic.importer.fileformat.BibtexParser;
 import org.jabref.logic.layout.LayoutFormatterBasedFormatter;
 import org.jabref.logic.layout.format.RemoveLatexCommandsFormatter;
@@ -31,7 +32,7 @@ import org.apache.http.client.utils.URIBuilder;
  *
  * @see <a href="https://dblp.dagstuhl.de/faq/13501473">Basic API documentation</a>
  */
-public class DBLPFetcher implements RawFetcher {
+public class DBLPFetcher implements SearchBasedParserFetcher, RawFetcher {
 
     private static final String BASIC_SEARCH_URL = "https://dblp.org/search/publ/api";
 
@@ -84,7 +85,7 @@ public class DBLPFetcher implements RawFetcher {
     }
 
     @Override
-    public URLDownload getRawUrlDownload(String anyField, String author, String title, String fromYear, String toYear, String journal) throws URISyntaxException, MalformedURLException {
+    public URLDownload getRawURLDownload(String anyField, String author, String title, String fromYear, String toYear, String journal) throws URISyntaxException, MalformedURLException {
         URIBuilder uriBuilder = new URIBuilder(BASIC_SEARCH_URL);
         uriBuilder.addParameter("q", anyField);
         uriBuilder.addParameter("h", String.valueOf(100)); // number of hits
