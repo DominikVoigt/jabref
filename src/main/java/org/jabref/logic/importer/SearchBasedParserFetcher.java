@@ -23,7 +23,6 @@ public interface SearchBasedParserFetcher extends SearchBasedFetcher {
 
     /**
      * Constructs a URL based on the query.
-     *
      * @param query the search query
      */
     URL getURLForQuery(String query) throws URISyntaxException, MalformedURLException, FetcherException;
@@ -42,7 +41,6 @@ public interface SearchBasedParserFetcher extends SearchBasedFetcher {
      *
      * Try to reuse existing {@link Formatter} for the cleanup. For example,
      * {@code new FieldFormatterCleanup(StandardField.TITLE, new RemoveBracesFormatter()).cleanup(entry);}
-     *
      * By default, no cleanup is done.
      *
      * @param entry the entry to be cleaned-up
