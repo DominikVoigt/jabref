@@ -20,7 +20,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @FetcherTest
-public class AstrophysicsDataSystemTest implements SearchBasedFetcherCapabilityTest {
+public class AstrophysicsDataSystemTest {
 
     private AstrophysicsDataSystem fetcher;
     private BibEntry diezSliceTheoremEntry;
@@ -197,35 +197,5 @@ public class AstrophysicsDataSystemTest implements SearchBasedFetcherCapabilityT
     public void testPerformSearchByLuceyPaulEntry() throws Exception {
         Optional<BibEntry> fetchedEntry = fetcher.performSearchById("2000JGR...10520297L");
         assertEquals(Optional.of(luceyPaulEntry), fetchedEntry);
-    }
-
-    @Override
-    public void authorSearch() throws Exception {
-
-    }
-
-    @Override
-    public void yearSearch() throws Exception {
-
-    }
-
-    @Override
-    public void yearRangeSearch() throws Exception {
-
-    }
-
-    @Override
-    public void journalSearch() throws Exception {
-
-    }
-
-    @Override
-    public void phraseSearch() throws Exception {
-
-    }
-
-    @Override
-    public void authorAndTitleSearch() throws Exception {
-
     }
 }

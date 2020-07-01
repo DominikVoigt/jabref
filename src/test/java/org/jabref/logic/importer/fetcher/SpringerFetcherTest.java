@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @FetcherTest
-class SpringerFetcherTest implements SearchBasedFetcherCapabilityTest {
+class SpringerFetcherTest {
 
     SpringerFetcher fetcher;
 
@@ -77,35 +77,5 @@ class SpringerFetcherTest implements SearchBasedFetcherCapabilityTest {
     @Test
     void searchByEmptyQueryFindsNothing() throws Exception {
         assertEquals(Collections.emptyList(), fetcher.performSearch(""));
-    }
-
-    @Override
-    public void authorSearch() throws Exception {
-
-    }
-
-    @Override
-    public void yearSearch() throws Exception {
-
-    }
-
-    @Override
-    public void yearRangeSearch() throws Exception {
-
-    }
-
-    @Override
-    public void journalSearch() throws Exception {
-
-    }
-
-    @Override
-    public void phraseSearch() throws Exception {
-
-    }
-
-    @Override
-    public void authorAndTitleSearch() throws Exception {
-
     }
 }

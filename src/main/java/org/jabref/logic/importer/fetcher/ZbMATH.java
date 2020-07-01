@@ -38,7 +38,9 @@ public class ZbMATH implements SearchBasedParserFetcher {
     }
 
     /**
-     * TODO: Implement EntryBasedParserFetcher We use the zbMATH Citation matcher (https://www.zbmath.org/citationmatching/) instead of the usual search since this tool is optimized for finding a publication based on partial information.
+     * TODO: Implement EntryBasedParserFetcher
+     * We use the zbMATH Citation matcher (https://www.zbmath.org/citationmatching/)
+     * instead of the usual search since this tool is optimized for finding a publication based on partial information.
      */
     /*
     @Override

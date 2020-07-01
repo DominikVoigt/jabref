@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 
 @FetcherTest
 @Disabled("ACM endpoint does not work, thus the fetcher does not work at all. See https://github.com/JabRef/jabref/issues/5804 for details.")
-class ACMPortalFetcherTest implements SearchBasedFetcherCapabilityTest {
+class ACMPortalFetcherTest {
     ACMPortalFetcher fetcher;
 
     @BeforeEach
@@ -53,35 +53,5 @@ class ACMPortalFetcherTest implements SearchBasedFetcherCapabilityTest {
 
         List<BibEntry> fetchedEntries = fetcher.performSearch("jabref architectural churn");
         assertEquals(Collections.singletonList(expected), fetchedEntries);
-    }
-
-    @Override
-    public void authorSearch() throws Exception {
-
-    }
-
-    @Override
-    public void yearSearch() throws Exception {
-
-    }
-
-    @Override
-    public void yearRangeSearch() throws Exception {
-
-    }
-
-    @Override
-    public void journalSearch() throws Exception {
-
-    }
-
-    @Override
-    public void phraseSearch() throws Exception {
-
-    }
-
-    @Override
-    public void authorAndTitleSearch() throws Exception {
-
     }
 }
