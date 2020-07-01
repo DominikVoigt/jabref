@@ -20,7 +20,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @FetcherTest
-class ZbMATHTest implements SearchBasedFetcherCapabilityTest {
+class ZbMATHTest {
     private ZbMATH fetcher;
     private BibEntry donaldsonEntry;
 
@@ -52,35 +52,5 @@ class ZbMATHTest implements SearchBasedFetcherCapabilityTest {
     void searchByQueryFindsEntry() throws Exception {
         List<BibEntry> fetchedEntries = fetcher.performSearch("an:0507.57010");
         assertEquals(Collections.singletonList(donaldsonEntry), fetchedEntries);
-    }
-
-    @Override
-    public void authorSearch() throws Exception {
-
-    }
-
-    @Override
-    public void yearSearch() throws Exception {
-
-    }
-
-    @Override
-    public void yearRangeSearch() throws Exception {
-
-    }
-
-    @Override
-    public void journalSearch() throws Exception {
-
-    }
-
-    @Override
-    public void phraseSearch() throws Exception {
-
-    }
-
-    @Override
-    public void authorAndTitleSearch() throws Exception {
-
     }
 }
