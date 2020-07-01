@@ -237,13 +237,13 @@ class ArXivTest implements SearchBasedFetcherCapabilityTest {
         });
     }
 
-    @Disabled("Find out correct search prefixes")
+    @Disabled("Is not supported by the current API")
     @Test
     @Override
     public void yearSearch() throws Exception {
     }
 
-    @Disabled("Find out correct search prefixes")
+    @Disabled("Is not supported by the current API")
     @Test
     @Override
     public void yearRangeSearch() throws Exception {
