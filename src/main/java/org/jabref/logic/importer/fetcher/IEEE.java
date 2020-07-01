@@ -19,7 +19,6 @@ import org.jabref.logic.help.HelpFile;
 import org.jabref.logic.importer.FulltextFetcher;
 import org.jabref.logic.importer.ImportFormatPreferences;
 import org.jabref.logic.importer.Parser;
-import org.jabref.logic.importer.RawFetcher;
 import org.jabref.logic.importer.SearchBasedParserFetcher;
 import org.jabref.logic.net.URLDownload;
 import org.jabref.logic.util.BuildInfo;
@@ -41,7 +40,7 @@ import org.slf4j.LoggerFactory;
  *
  * @implNote <a href="https://developer.ieee.org/docs">API documentation</a>
  */
-public class IEEE implements FulltextFetcher, SearchBasedParserFetcher, RawFetcher {
+public class IEEE implements FulltextFetcher, SearchBasedParserFetcher {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IEEE.class);
     private static final String STAMP_BASE_STRING_DOCUMENT = "/stamp/stamp.jsp?tp=&arnumber=";
@@ -233,16 +232,5 @@ public class IEEE implements FulltextFetcher, SearchBasedParserFetcher, RawFetch
     @Override
     public Optional<HelpFile> getHelpPage() {
         return Optional.of(HelpFile.FETCHER_IEEEXPLORE);
-    }
-
-    @Override
-    public URLDownload getRawURLDownload(AdvancedSearchConfig advancedSearchConfig) throws MalformedURLException, URISyntaxException {
-        URIBuilder uriBuilder = new URIBuilder("https://ieeexploreapi.ieee.org/api/v1/search/articles");
-        uriBuilder.addParameter("apikey", API_KEY);
-        uriBuilder.addParameter("querytext", advancedSearchConfig.getDefaultField());
-        // TODO: Add other parameters author, title....
-
-        URLDownload.bypassSSLVerification();
-        return new URLDownload(uriBuilder.build().toURL());
     }
 }

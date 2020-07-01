@@ -13,12 +13,10 @@ import org.jabref.logic.help.HelpFile;
 import org.jabref.logic.importer.FetcherException;
 import org.jabref.logic.importer.ImportFormatPreferences;
 import org.jabref.logic.importer.Parser;
-import org.jabref.logic.importer.RawFetcher;
 import org.jabref.logic.importer.SearchBasedParserFetcher;
 import org.jabref.logic.importer.fileformat.BibtexParser;
 import org.jabref.logic.layout.LayoutFormatterBasedFormatter;
 import org.jabref.logic.layout.format.RemoveLatexCommandsFormatter;
-import org.jabref.logic.net.URLDownload;
 import org.jabref.model.cleanup.FieldFormatterCleanup;
 import org.jabref.model.cleanup.FieldFormatterCleanups;
 import org.jabref.model.entry.BibEntry;
@@ -32,7 +30,7 @@ import org.apache.http.client.utils.URIBuilder;
  *
  * @see <a href="https://dblp.dagstuhl.de/faq/13501473">Basic API documentation</a>
  */
-public class DBLPFetcher implements SearchBasedParserFetcher, RawFetcher {
+public class DBLPFetcher implements SearchBasedParserFetcher {
 
     private static final String BASIC_SEARCH_URL = "https://dblp.org/search/publ/api";
 
@@ -82,17 +80,5 @@ public class DBLPFetcher implements SearchBasedParserFetcher, RawFetcher {
     @Override
     public Optional<HelpFile> getHelpPage() {
         return Optional.of(HelpFile.FETCHER_DBLP);
-    }
-
-    @Override
-    public URLDownload getRawURLDownload(AdvancedSearchConfig advancedSearchConfig) throws URISyntaxException, MalformedURLException {
-        URIBuilder uriBuilder = new URIBuilder(BASIC_SEARCH_URL);
-        uriBuilder.addParameter("q", advancedSearchConfig.getDefaultField());
-        uriBuilder.addParameter("h", String.valueOf(100)); // number of hits
-        uriBuilder.addParameter("c", String.valueOf(0)); // no need for auto-completion
-        uriBuilder.addParameter("f", String.valueOf(0)); // "from", index of first hit to download
-        uriBuilder.addParameter("format", "bib1");
-
-        return new URLDownload(uriBuilder.build().toURL());
     }
 }
