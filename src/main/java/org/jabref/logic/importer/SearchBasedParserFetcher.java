@@ -35,7 +35,10 @@ public interface SearchBasedParserFetcher extends SearchBasedFetcher {
 
     /**
      * Performs a cleanup of the fetched entry.
-     * Only systematic errors of the fetcher should be corrected here (i.e. if information is consistently contained in the wrong field or the wrong format) but not cosmetic issues which may depend on the user's taste (for example, LateX code vs HTML in the abstract).
+     *
+     * Only systematic errors of the fetcher should be corrected here
+     * (i.e. if information is consistently contained in the wrong field or the wrong format)
+     * but not cosmetic issues which may depend on the user's taste (for example, LateX code vs HTML in the abstract).
      *
      * Try to reuse existing {@link Formatter} for the cleanup. For example,
      * {@code new FieldFormatterCleanup(StandardField.TITLE, new RemoveBracesFormatter()).cleanup(entry);}
