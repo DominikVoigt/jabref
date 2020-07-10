@@ -2,9 +2,6 @@ package org.jabref.logic.importer.fetcher;
 
 import org.jabref.model.strings.StringUtil;
 
-/**
- * Defines all advanced search parameters we support
- */
 public class AdvancedSearchConfig {
     private final String defaultField;
     private final String author;
@@ -22,10 +19,7 @@ public class AdvancedSearchConfig {
         this.journal = journal;
     }
 
-    /**
-     * Returns whether all text search fields are empty.
-     */
-    public boolean isEmpty() {
+    public boolean areTextSearchFieldsEmpty() {
         return StringUtil.isBlank(defaultField) && StringUtil.isBlank(title) && StringUtil.isBlank(author) && StringUtil.isBlank(journal);
     }
 
@@ -53,11 +47,6 @@ public class AdvancedSearchConfig {
         return journal;
     }
 
-    /**
-     * Provides a builder instance to instantiate an AdvancedSearchConfig instance
-     *
-     * @return Builder
-     */
     public static AdvancedSearchConfigBuilder builder() {
         return new AdvancedSearchConfigBuilder();
     }

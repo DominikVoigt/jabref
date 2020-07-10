@@ -169,7 +169,6 @@ public class ArXiv implements FulltextFetcher, SearchBasedFetcher, IdBasedFetche
      * Queries the API.
      *
      * If only {@code searchQuery} is given, then the API will return results for each article that matches the query.
-     *
      * If only {@code ids} is given, then the API will return results for each article in the list.
      * If both {@code searchQuery} and {@code ids} are given, then the API will return each article in
      * {@code ids} that matches {@code searchQuery}. This allows the API to act as a results filter.

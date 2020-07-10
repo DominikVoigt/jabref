@@ -25,10 +25,9 @@ public interface RawFetcher extends SearchBasedParserFetcher {
      * @param advancedSearchConfig the search config defining all fielded search parameters
      */
     default List<BibEntry> performRawSearch(AdvancedSearchConfig advancedSearchConfig) throws FetcherException {
-        if (advancedSearchConfig.isEmpty()) {
+        if (advancedSearchConfig.areTextSearchFieldsEmpty()) {
             return Collections.emptyList();
         }
-        // Replace white spaces with + to form valid URL parameters. No full URL encoding as it would encode "&" signs used for url parameters.
         try (InputStream stream = getRawURLDownload(advancedSearchConfig).asInputStream()) {
             List<BibEntry> fetchedEntries = getParser().parseEntries(stream);
             fetchedEntries.forEach(this::doPostCleanup);

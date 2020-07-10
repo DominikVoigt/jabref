@@ -11,35 +11,35 @@ interface SearchBasedFetcherCapabilityTest {
      * Test whether the library API supports author field search.
      */
     @Test
-    void authorSearch() throws Exception;
+    void supportsAuthorSearch() throws Exception;
 
     /**
      * Test whether the library API supports year field search.
      */
     @Test
-    void yearSearch() throws Exception;
+    void supportsYearSearch() throws Exception;
 
     /**
      * Test whether the library API supports year range search.
      */
     @Test
-    void yearRangeSearch() throws Exception;
+    void supportsYearRangeSearch() throws Exception;
 
     /**
      * Test whether the library API supports journal based search.
      */
     @Test
-    void journalSearch() throws Exception;
+    void supportsJournalSearch() throws Exception;
 
     /**
      * Test whether the library API supports phrase search.
      */
     @Test
-    void phraseSearch() throws Exception;
+    void supportsPhraseSearch() throws Exception;
 
     /**
      * Test whether the library API supports boolean AND connection in queries.
      */
     @Test
-    void authorAndTitleSearch() throws Exception;
+    void supportsBooleanANDSearch() throws Exception;
 }

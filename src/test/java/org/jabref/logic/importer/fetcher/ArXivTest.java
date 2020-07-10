@@ -63,63 +63,63 @@ class ArXivTest implements SearchBasedFetcherCapabilityTest {
 
     @Test
     void findFullTextByDOI() throws IOException {
-        entry.withField(StandardField.DOI, "10.1529/biophysj.104.047340")
-             .withField(StandardField.TITLE, "Pause Point Spectra in DNA Constant-Force Unzipping");
+        entry.setField(StandardField.DOI, "10.1529/biophysj.104.047340");
+        entry.setField(StandardField.TITLE, "Pause Point Spectra in DNA Constant-Force Unzipping");
 
         assertEquals(Optional.of(new URL("http://arxiv.org/pdf/cond-mat/0406246v1")), finder.findFullText(entry));
     }
 
     @Test
     void findFullTextByEprint() throws IOException {
-        entry.withField(StandardField.EPRINT, "1603.06570");
+        entry.setField(StandardField.EPRINT, "1603.06570");
         assertEquals(Optional.of(new URL("http://arxiv.org/pdf/1603.06570v1")), finder.findFullText(entry));
     }
 
     @Test
     void findFullTextByEprintWithPrefix() throws IOException {
-        entry.withField(StandardField.EPRINT, "arXiv:1603.06570");
+        entry.setField(StandardField.EPRINT, "arXiv:1603.06570");
         assertEquals(Optional.of(new URL("http://arxiv.org/pdf/1603.06570v1")), finder.findFullText(entry));
     }
 
     @Test
     void findFullTextByEprintWithUnknownDOI() throws IOException {
-        entry.withField(StandardField.DOI, "10.1529/unknown")
-             .withField(StandardField.EPRINT, "1603.06570");
+        entry.setField(StandardField.DOI, "10.1529/unknown");
+        entry.setField(StandardField.EPRINT, "1603.06570");
 
         assertEquals(Optional.of(new URL("http://arxiv.org/pdf/1603.06570v1")), finder.findFullText(entry));
     }
 
     @Test
     void findFullTextByTitle() throws IOException {
-        entry.withField(StandardField.TITLE, "Pause Point Spectra in DNA Constant-Force Unzipping");
+        entry.setField(StandardField.TITLE, "Pause Point Spectra in DNA Constant-Force Unzipping");
 
         assertEquals(Optional.of(new URL("http://arxiv.org/pdf/cond-mat/0406246v1")), finder.findFullText(entry));
     }
 
     @Test
     void findFullTextByTitleAndPartOfAuthor() throws IOException {
-        entry.withField(StandardField.TITLE, "Pause Point Spectra in DNA Constant-Force Unzipping")
-             .withField(StandardField.AUTHOR, "Weeks and Lucks");
+        entry.setField(StandardField.TITLE, "Pause Point Spectra in DNA Constant-Force Unzipping");
+        entry.setField(StandardField.AUTHOR, "Weeks and Lucks");
 
         assertEquals(Optional.of(new URL("http://arxiv.org/pdf/cond-mat/0406246v1")), finder.findFullText(entry));
     }
 
     @Test
     void notFindFullTextByUnknownDOI() throws IOException {
-        entry.withField(StandardField.DOI, "10.1529/unknown");
+        entry.setField(StandardField.DOI, "10.1529/unknown");
         assertEquals(Optional.empty(), finder.findFullText(entry));
     }
 
     @Test
     void notFindFullTextByUnknownId() throws IOException {
-        entry.withField(StandardField.EPRINT, "1234.12345");
+        entry.setField(StandardField.EPRINT, "1234.12345");
         assertEquals(Optional.empty(), finder.findFullText(entry));
     }
 
     @Test
     void findFullTextByDOINotAvailableInCatalog() throws IOException {
-        entry.withField(StandardField.DOI, "10.1016/0370-2693(77)90015-6")
-             .withField(StandardField.TITLE, "Superspace formulation of supergravity");
+        entry.setField(StandardField.DOI, "10.1016/0370-2693(77)90015-6");
+        entry.setField(StandardField.TITLE, "Superspace formulation of supergravity");
 
         assertEquals(Optional.empty(), finder.findFullText(entry));
     }
@@ -225,7 +225,7 @@ class ArXivTest implements SearchBasedFetcherCapabilityTest {
 
     @Test
     @Override
-    public void authorSearch() throws Exception {
+    public void supportsAuthorSearch() throws Exception {
         List<BibEntry> results = finder.performSearch("au:\"Tobias Diez\"");
         assertFalse(results.isEmpty());
         results.forEach(bibEntry -> {
@@ -240,19 +240,19 @@ class ArXivTest implements SearchBasedFetcherCapabilityTest {
     @Disabled("Is not supported by the current API")
     @Test
     @Override
-    public void yearSearch() throws Exception {
+    public void supportsYearSearch() throws Exception {
     }
 
     @Disabled("Is not supported by the current API")
     @Test
     @Override
-    public void yearRangeSearch() throws Exception {
+    public void supportsYearRangeSearch() throws Exception {
 
     }
 
     @Test
     @Override
-    public void journalSearch() throws Exception {
+    public void supportsJournalSearch() throws Exception {
         List<BibEntry> results = finder.performSearch("jr: \"Journal of Geometry and Physics (2013)\"");
         assertFalse(results.isEmpty());
         results.forEach(bibEntry -> {
@@ -266,7 +266,7 @@ class ArXivTest implements SearchBasedFetcherCapabilityTest {
 
     @Test
     @Override
-    public void phraseSearch() throws Exception {
+    public void supportsPhraseSearch() throws Exception {
         BibEntry expected = new BibEntry(StandardEntryType.Article);
         expected.withField(StandardField.AUTHOR, "Tobias Büscher and Angel L. Diez and Gerhard Gompper and Jens Elgeti")
                 .withField(StandardField.TITLE, "Instability and fingering of interfaces in growing tissue")
@@ -290,7 +290,7 @@ class ArXivTest implements SearchBasedFetcherCapabilityTest {
 
     @Test
     @Override
-    public void authorAndTitleSearch() throws Exception {
+    public void supportsBooleanANDSearch() throws Exception {
         BibEntry expected = new BibEntry(StandardEntryType.Article);
         expected.withField(StandardField.AUTHOR, "Tobias Büscher and Angel L. Diez and Gerhard Gompper and Jens Elgeti")
                 .withField(StandardField.TITLE, "Instability and fingering of interfaces in growing tissue")
@@ -304,7 +304,7 @@ class ArXivTest implements SearchBasedFetcherCapabilityTest {
 
         List<BibEntry> result = finder.performSearch("au:\"Tobias Büscher\" AND ti:\"Instability and fingering of interfaces\"");
 
-        // There is only one paper authored by Tobias Büschler with that phrase in the title
+        // There is only one paper authored by Tobias Büscher with that phrase in the title
         assertEquals(Collections.singletonList(expected), result);
     }
 }
