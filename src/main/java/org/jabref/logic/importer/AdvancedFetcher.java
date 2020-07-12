@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.util.Collections;
 import java.util.List;
 
 import org.jabref.logic.importer.fetcher.AdvancedSearchConfig;
@@ -25,10 +24,7 @@ public interface AdvancedFetcher extends SearchBasedParserFetcher {
      * @param advancedSearchConfig the search config defining all fielded search parameters
      */
     default List<BibEntry> performAdvancedSearch(AdvancedSearchConfig advancedSearchConfig) throws FetcherException {
-        if (advancedSearchConfig.areTextSearchFieldsEmpty()) {
-            return Collections.emptyList();
-        }
-        try (InputStream stream = getRawURLDownload(advancedSearchConfig).asInputStream()) {
+        try (InputStream stream = getAdvancedURLDownload(advancedSearchConfig).asInputStream()) {
             List<BibEntry> fetchedEntries = getParser().parseEntries(stream);
             fetchedEntries.forEach(this::doPostCleanup);
             return fetchedEntries;
@@ -43,10 +39,8 @@ public interface AdvancedFetcher extends SearchBasedParserFetcher {
     }
 
     /**
-     * TODO: Implement this with all parameters in all implementing classes.
-     *
      * @param advancedSearchConfig the search config defining all fielded search parameters
      * @throws MalformedURLException Thrown if the given parameters are not formatted correctly.
      */
-    URLDownload getRawURLDownload(AdvancedSearchConfig advancedSearchConfig) throws MalformedURLException, URISyntaxException;
+    URLDownload getAdvancedURLDownload(AdvancedSearchConfig advancedSearchConfig) throws MalformedURLException, URISyntaxException;
 }
