@@ -1,7 +1,5 @@
 package org.jabref.logic.importer.fetcher;
 
-import java.util.Optional;
-
 import org.jabref.model.strings.StringUtil;
 
 public class AdvancedSearchConfig {
@@ -120,8 +118,12 @@ public class AdvancedSearchConfig {
          *
          * @return AdvancedSearchConfig instance with the fields set to the values defined in the building instance.
          */
-        public Optional<AdvancedSearchConfig> build() {
-            return textSearchFieldsAreEmpty() ? Optional.empty() : Optional.of(new AdvancedSearchConfig(defaultField, author, title, fromYear, toYear, journal));
+        public AdvancedSearchConfig build() throws IllegalArgumentException {
+            if (textSearchFieldsAreEmpty()) {
+                throw new IllegalArgumentException("Not all text fields may be empty!");
+            } else {
+                return new AdvancedSearchConfig(defaultField, author, title, fromYear, toYear, journal);
+            }
         }
 
         private boolean textSearchFieldsAreEmpty() {
