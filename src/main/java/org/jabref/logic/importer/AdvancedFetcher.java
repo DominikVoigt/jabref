@@ -15,7 +15,7 @@ import org.jabref.model.entry.BibEntry;
  * This interface allows SearchBasedParserFetcher fetchers to test their corresponding
  * library APIs for their advanced search options, e.g. search in the "title" field.
  */
-public interface RawFetcher extends SearchBasedParserFetcher {
+public interface AdvancedFetcher extends SearchBasedParserFetcher {
 
     /**
      * This method is used to send queries with advanced URL parameters.
@@ -24,7 +24,7 @@ public interface RawFetcher extends SearchBasedParserFetcher {
      *
      * @param advancedSearchConfig the search config defining all fielded search parameters
      */
-    default List<BibEntry> performRawSearch(AdvancedSearchConfig advancedSearchConfig) throws FetcherException {
+    default List<BibEntry> performAdvancedSearch(AdvancedSearchConfig advancedSearchConfig) throws FetcherException {
         if (advancedSearchConfig.areTextSearchFieldsEmpty()) {
             return Collections.emptyList();
         }

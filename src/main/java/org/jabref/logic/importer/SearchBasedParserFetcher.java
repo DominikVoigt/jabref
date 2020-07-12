@@ -41,6 +41,7 @@ public interface SearchBasedParserFetcher extends SearchBasedFetcher {
      *
      * Try to reuse existing {@link Formatter} for the cleanup. For example,
      * {@code new FieldFormatterCleanup(StandardField.TITLE, new RemoveBracesFormatter()).cleanup(entry);}
+     *
      * By default, no cleanup is done.
      *
      * @param entry the entry to be cleaned-up
