@@ -52,18 +52,14 @@ public class AdvancedSearchConfig {
     }
 
     public static class AdvancedSearchConfigBuilder {
-        private String defaultField;
-        private String author;
-        private String title;
+        private String defaultField = "";
+        private String author = "";
+        private String title = "";
         private int fromYear;
         private int toYear;
-        private String journal;
+        private String journal = "";
 
         public AdvancedSearchConfigBuilder() {
-            defaultField = "";
-            author = "";
-            title = "";
-            journal = "";
         }
 
         /**
