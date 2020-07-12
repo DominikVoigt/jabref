@@ -19,7 +19,7 @@ public class AdvancedSearchConfig {
         this.journal = journal;
     }
 
-    public boolean areTextSearchFieldsEmpty() {
+    public boolean textSearchFieldsAreEmpty() {
         return StringUtil.isBlank(defaultField) && StringUtil.isBlank(title) && StringUtil.isBlank(author) && StringUtil.isBlank(journal);
     }
 
