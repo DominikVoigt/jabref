@@ -232,7 +232,7 @@ class ArXivTest implements SearchBasedFetcherCapabilityTest {
 
             String author = bibEntry.getField(StandardField.AUTHOR).orElse("");
 
-            // Some papers have other authors
+            // The co-authors differ, thus we check for the author present at all papers
             Assertions.assertTrue(author.contains("Tobias Diez"));
         });
     }
