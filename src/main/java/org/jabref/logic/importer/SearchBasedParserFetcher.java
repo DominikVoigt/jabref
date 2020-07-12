@@ -8,7 +8,6 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 
-import org.jabref.logic.net.URLDownload;
 import org.jabref.model.cleanup.Formatter;
 import org.jabref.model.entry.BibEntry;
 import org.jabref.model.strings.StringUtil;
@@ -50,25 +49,13 @@ public interface SearchBasedParserFetcher extends SearchBasedFetcher {
         // Do nothing by default
     }
 
-    /**
-     * Gets the {@link URLDownload} object for downloading content. Overwrite, if you need to send additional headers for the download
-     *
-     * @param query The search query
-     * @throws MalformedURLException
-     * @throws FetcherException
-     * @throws URISyntaxException
-     */
-    default URLDownload getUrlDownload(String query) throws MalformedURLException, FetcherException, URISyntaxException {
-        return new URLDownload(getURLForQuery(query));
-    }
-
     @Override
     default List<BibEntry> performSearch(String query) throws FetcherException {
         if (StringUtil.isBlank(query)) {
             return Collections.emptyList();
         }
 
-        try (InputStream stream = getUrlDownload(query).asInputStream()) {
+        try (InputStream stream = getUrlDownload(getURLForQuery(query)).asInputStream()) {
             List<BibEntry> fetchedEntries = getParser().parseEntries(stream);
 
             // Post-cleanup
