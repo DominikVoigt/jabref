@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Defines the set of capability tests that each tests a given search capability, e.g. author based search.
+ * The idea is to code the capabilities of a fetcher into Java code
+. This way, a) the capbilities of a fetcher are checked automatically (because they can change from time-to-time by the provider) and b) the queries sent to the fetchers can be debugged directly without a route through to some fetcher code.
  */
 interface SearchBasedFetcherCapabilityTest {
 
