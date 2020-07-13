@@ -2,8 +2,6 @@ package org.jabref.logic.importer;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.util.List;
 
 import org.jabref.logic.importer.fetcher.AdvancedSearchConfig;
@@ -28,8 +26,6 @@ public interface AdvancedFetcher extends SearchBasedParserFetcher {
             List<BibEntry> fetchedEntries = getParser().parseEntries(stream);
             fetchedEntries.forEach(this::doPostCleanup);
             return fetchedEntries;
-        } catch (MalformedURLException | URISyntaxException e) {
-            throw new FetcherException("Search URI is malformed", e);
         } catch (IOException e) {
             // TODO: Catch HTTP Response 401/403 errors and report that user has no rights to access resource
             throw new FetcherException("A network error occurred", e);
@@ -38,10 +34,5 @@ public interface AdvancedFetcher extends SearchBasedParserFetcher {
         }
     }
 
-    /**
-     * @param advancedSearchConfig the search config defining all fielded search parameters
-     * @throws MalformedURLException Thrown if any errors occurred during the conversion from the URI to the URL
-     * @throws URISyntaxException    If the base URI of the fetcher is not syntactically correct.
-     */
-    URLDownload getAdvancedURLDownload(AdvancedSearchConfig advancedSearchConfig) throws MalformedURLException, URISyntaxException;
+    URLDownload getAdvancedURLDownload(AdvancedSearchConfig advancedSearchConfig);
 }

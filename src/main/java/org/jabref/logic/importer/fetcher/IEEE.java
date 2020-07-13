@@ -239,30 +239,24 @@ public class IEEE implements FulltextFetcher, SearchBasedParserFetcher, Advanced
     }
 
     @Override
-    public URLDownload getAdvancedURLDownload(AdvancedSearchConfig advancedSearchConfig) throws URISyntaxException, MalformedURLException {
-        URIBuilder uriBuilder = new URIBuilder("https://ieeexploreapi.ieee.org/api/v1/search/articles");
-        uriBuilder.addParameter("apikey", API_KEY);
-        if (!advancedSearchConfig.getDefaultField().isBlank()) {
-            uriBuilder.addParameter("querytext", advancedSearchConfig.getDefaultField());
-        }
-        if (!advancedSearchConfig.getAuthor().isBlank()) {
-            uriBuilder.addParameter("author", advancedSearchConfig.getAuthor());
-        }
-        if (!advancedSearchConfig.getTitle().isBlank()) {
-            uriBuilder.addParameter("article_title", advancedSearchConfig.getTitle());
-        }
-        if (!advancedSearchConfig.getJournal().isBlank()) {
-            uriBuilder.addParameter("publication_title", advancedSearchConfig.getJournal());
-        }
-        if (advancedSearchConfig.getFromYear() != 0) {
-            uriBuilder.addParameter("start_year", String.valueOf(advancedSearchConfig.getFromYear()));
-        }
-        if (advancedSearchConfig.getToYear() != 0) {
-            uriBuilder.addParameter("end_year", String.valueOf(advancedSearchConfig.getToYear()));
-        }
+    public URLDownload getAdvancedURLDownload(AdvancedSearchConfig advancedSearchConfig) {
+        URLDownload urlDownload;
+        try {
+            URIBuilder uriBuilder = new URIBuilder("https://ieeexploreapi.ieee.org/api/v1/search/articles");
+            uriBuilder.addParameter("apikey", API_KEY);
+            advancedSearchConfig.getDefaultField().ifPresent(defaultField -> uriBuilder.addParameter("querytext", defaultField));
+            advancedSearchConfig.getAuthor().ifPresent(author -> uriBuilder.addParameter("author", author));
+            advancedSearchConfig.getTitle().ifPresent(articleTitle -> uriBuilder.addParameter("article_title", articleTitle));
+            advancedSearchConfig.getJournal().ifPresent(journalTitle -> uriBuilder.addParameter("publication_title", journalTitle));
+            advancedSearchConfig.getFromYear().map(String::valueOf).ifPresent(year -> uriBuilder.addParameter("start_year", year));
+            advancedSearchConfig.getToYear().map(String::valueOf).ifPresent(year -> uriBuilder.addParameter("end_year", year));
 
-        URLDownload.bypassSSLVerification();
-
-        return new URLDownload(uriBuilder.build().toURL());
+            URLDownload.bypassSSLVerification();
+            urlDownload = new URLDownload(uriBuilder.build().toURL());
+        } catch (URISyntaxException | MalformedURLException ex) {
+            LOGGER.error("Error creating URL.", ex);
+            throw new IllegalStateException("Error during creation of URL.", ex);
+        }
+        return urlDownload;
     }
 }
