@@ -1,5 +1,7 @@
 package org.jabref.logic.importer.fetcher;
 
+import java.util.Objects;
+
 import org.jabref.model.strings.StringUtil;
 
 public class AdvancedSearchConfig {
@@ -60,34 +62,30 @@ public class AdvancedSearchConfig {
 
         /**
          * @param anyField Search string for any field
-         * @return Builder instance
          */
         public AdvancedSearchConfigBuilder anyField(String anyField) {
-            this.defaultField = anyField;
+            this.defaultField = Objects.requireNonNull(anyField);
             return this;
         }
 
         /**
          * @param author Search string for author field
-         * @return Builder instance
          */
         public AdvancedSearchConfigBuilder author(String author) {
-            this.author = author;
+            this.author = Objects.requireNonNull(author);
             return this;
         }
 
         /**
          * @param title Search string for title field
-         * @return Builder instance
          */
         public AdvancedSearchConfigBuilder title(String title) {
-            this.title = title;
+            this.title = Objects.requireNonNull(title);
             return this;
         }
 
         /**
          * @param fromYear Search string for year search (lower bound)
-         * @return Builder instance
          */
         public AdvancedSearchConfigBuilder fromYear(int fromYear) {
             this.fromYear = fromYear;
@@ -96,7 +94,6 @@ public class AdvancedSearchConfig {
 
         /**
          * @param toYear Search string for year search (upper bound)
-         * @return Builder instance
          */
         public AdvancedSearchConfigBuilder toYear(int toYear) {
             this.toYear = toYear;
@@ -105,10 +102,9 @@ public class AdvancedSearchConfig {
 
         /**
          * @param journal Search string for journal field search
-         * @return Builder instance
          */
         public AdvancedSearchConfigBuilder journal(String journal) {
-            this.journal = journal;
+            this.journal = Objects.requireNonNull(journal);
             return this;
         }
 
@@ -117,10 +113,12 @@ public class AdvancedSearchConfig {
          * If all text fields are empty an empty optional is returned
          *
          * @return AdvancedSearchConfig instance with the fields set to the values defined in the building instance.
+         * @throws IllegalStateException An IllegalStateException is thrown in case all text search fields are empty.
+         *                               See: https://softwareengineering.stackexchange.com/questions/241309/builder-pattern-when-to-fail/241320#241320
          */
-        public AdvancedSearchConfig build() throws IllegalArgumentException {
+        public AdvancedSearchConfig build() throws IllegalStateException {
             if (textSearchFieldsAreEmpty()) {
-                throw new IllegalArgumentException("Not all text fields may be empty!");
+                throw new IllegalStateException("Not all text fields may be empty!");
             } else {
                 return new AdvancedSearchConfig(defaultField, author, title, fromYear, toYear, journal);
             }

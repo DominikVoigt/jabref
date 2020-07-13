@@ -40,7 +40,8 @@ public interface AdvancedFetcher extends SearchBasedParserFetcher {
 
     /**
      * @param advancedSearchConfig the search config defining all fielded search parameters
-     * @throws MalformedURLException Thrown if the given parameters are not formatted correctly.
+     * @throws MalformedURLException Thrown if any errors occurred during the conversion from the URI to the URL
+     * @throws URISyntaxException    If the base URI of the fetcher is not syntactically correct.
      */
     URLDownload getAdvancedURLDownload(AdvancedSearchConfig advancedSearchConfig) throws MalformedURLException, URISyntaxException;
 }

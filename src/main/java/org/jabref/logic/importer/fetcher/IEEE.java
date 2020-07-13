@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.jabref.logic.help.HelpFile;
+import org.jabref.logic.importer.AdvancedFetcher;
 import org.jabref.logic.importer.FulltextFetcher;
 import org.jabref.logic.importer.ImportFormatPreferences;
 import org.jabref.logic.importer.Parser;
@@ -42,7 +43,7 @@ import org.slf4j.LoggerFactory;
  *
  * @implNote <a href="https://developer.ieee.org/docs">API documentation</a>
  */
-public class IEEE implements FulltextFetcher, SearchBasedParserFetcher {
+public class IEEE implements FulltextFetcher, SearchBasedParserFetcher, AdvancedFetcher {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IEEE.class);
     private static final String STAMP_BASE_STRING_DOCUMENT = "/stamp/stamp.jsp?tp=&arnumber=";
@@ -235,5 +236,33 @@ public class IEEE implements FulltextFetcher, SearchBasedParserFetcher {
     @Override
     public Optional<HelpFile> getHelpPage() {
         return Optional.of(HelpFile.FETCHER_IEEEXPLORE);
+    }
+
+    @Override
+    public URLDownload getAdvancedURLDownload(AdvancedSearchConfig advancedSearchConfig) throws URISyntaxException, MalformedURLException {
+        URIBuilder uriBuilder = new URIBuilder("https://ieeexploreapi.ieee.org/api/v1/search/articles");
+        uriBuilder.addParameter("apikey", API_KEY);
+        if (!advancedSearchConfig.getDefaultField().isBlank()) {
+            uriBuilder.addParameter("querytext", advancedSearchConfig.getDefaultField());
+        }
+        if (!advancedSearchConfig.getAuthor().isBlank()) {
+            uriBuilder.addParameter("author", advancedSearchConfig.getAuthor());
+        }
+        if (!advancedSearchConfig.getTitle().isBlank()) {
+            uriBuilder.addParameter("article_title", advancedSearchConfig.getTitle());
+        }
+        if (!advancedSearchConfig.getJournal().isBlank()) {
+            uriBuilder.addParameter("publication_title", advancedSearchConfig.getJournal());
+        }
+        if (advancedSearchConfig.getFromYear() != 0) {
+            uriBuilder.addParameter("start_year", String.valueOf(advancedSearchConfig.getFromYear()));
+        }
+        if (advancedSearchConfig.getToYear() != 0) {
+            uriBuilder.addParameter("end_year", String.valueOf(advancedSearchConfig.getToYear()));
+        }
+
+        URLDownload.bypassSSLVerification();
+
+        return new URLDownload(uriBuilder.build().toURL());
     }
 }
