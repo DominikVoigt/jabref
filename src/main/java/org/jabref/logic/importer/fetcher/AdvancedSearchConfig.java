@@ -60,49 +60,31 @@ public class AdvancedSearchConfig {
         public AdvancedSearchConfigBuilder() {
         }
 
-        /**
-         * @param anyField Search string for any field
-         */
         public AdvancedSearchConfigBuilder anyField(String anyField) {
             this.defaultField = Objects.requireNonNull(anyField);
             return this;
         }
 
-        /**
-         * @param author Search string for author field
-         */
         public AdvancedSearchConfigBuilder author(String author) {
             this.author = Objects.requireNonNull(author);
             return this;
         }
 
-        /**
-         * @param title Search string for title field
-         */
         public AdvancedSearchConfigBuilder title(String title) {
             this.title = Objects.requireNonNull(title);
             return this;
         }
 
-        /**
-         * @param fromYear Search string for year search (lower bound)
-         */
         public AdvancedSearchConfigBuilder fromYear(int fromYear) {
             this.fromYear = fromYear;
             return this;
         }
 
-        /**
-         * @param toYear Search string for year search (upper bound)
-         */
         public AdvancedSearchConfigBuilder toYear(int toYear) {
             this.toYear = toYear;
             return this;
         }
 
-        /**
-         * @param journal Search string for journal field search
-         */
         public AdvancedSearchConfigBuilder journal(String journal) {
             this.journal = Objects.requireNonNull(journal);
             return this;
