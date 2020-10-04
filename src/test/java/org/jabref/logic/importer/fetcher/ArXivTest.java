@@ -249,6 +249,10 @@ class ArXivTest implements SearchBasedFetcherCapabilityTest {
         return "\"Journal of Geometry and Physics (2013)\"";
     }
 
+    /**
+     * A phrase is a sequence of terms wrapped in quotes.
+     * Only documents that contain exactly this sequence are returned.
+     */
     @Test
     public void supportsPhraseSearch() throws Exception {
         BibEntry expected = new BibEntry(StandardEntryType.Article)
@@ -264,14 +268,32 @@ class ArXivTest implements SearchBasedFetcherCapabilityTest {
                 .withField(StandardField.EPRINTCLASS, "q-bio.TO")
                 .withField(StandardField.KEYWORDS, "q-bio.TO");
 
-        List<BibEntry> resultWithPhraseSearch = fetcher.performSearch("au:\"Tobias Diez\"");
-        List<BibEntry> resultWithOutPhraseSearch = fetcher.performSearch("au:Tobias Diez");
-        // Ensure that phrase search result is just a subset of the default search result
+        List<BibEntry> resultWithPhraseSearch = fetcher.performSearch("ti:\"Taxonomy of Distributed\"");
+        List<BibEntry> resultWithOutPhraseSearch = fetcher.performSearch("ti:Taxonomy AND ti:of AND ti:Distributed");
+        // Phrase search result has to be subset of the default search result
         assertTrue(resultWithOutPhraseSearch.containsAll(resultWithPhraseSearch));
-        resultWithOutPhraseSearch.removeAll(resultWithPhraseSearch);
+    }
 
-        // There is only a single paper found by searching for Tobias Diez as author that is not authored by "Tobias Diez".
-        assertEquals(Collections.singletonList(expected), resultWithOutPhraseSearch);
+    /**
+     * A phrase is a sequence of terms wrapped in quotes.
+     * Only documents that contain exactly this sequence are returned.
+     */
+    @Test
+    public void supportsPhraseSearchAndMatchesExact() throws Exception {
+        BibEntry expected = new BibEntry(StandardEntryType.Article)
+                .withField(StandardField.AUTHOR, "Fauzi Adi Rafrastara and Qi Deyu")
+                .withField(StandardField.TITLE, "A Survey and Taxonomy of Distributed Data Mining Research Studies: A Systematic Literature Review")
+                .withField(StandardField.DATE, "2020-09-14")
+                .withField(StandardField.ABSTRACT, "Context: Data Mining (DM) method has been evolving year by year and as of today there is also the enhancement of DM technique that can be run several times faster than the traditional one, called Distributed Data Mining (DDM). It is not a new field in data processing actually, but in the recent years many researchers have been paying more attention on this area. Problems: The number of publication regarding DDM in high reputation journals and conferences has increased significantly. It makes difficult for researchers to gain a comprehensive view of DDM that require further research. Solution: We conducted a systematic literature review to map the previous research in DDM field. Our objective is to provide the motivation for new research by identifying the gap in DDM field as well as the hot area itself. Result: Our analysis came up with some conclusions by answering 7 research questions proposed in this literature review. In addition, the taxonomy of DDM research area is presented in this paper. Finally, this systematic literature review provides the statistic of development of DDM since 2000 to 2015, in which this will help the future researchers to have a comprehensive overview of current situation of DDM.")
+                .withField(StandardField.EPRINT, "2009.10618")
+                .withField(StandardField.FILE, ":http\\://arxiv.org/pdf/2009.10618v1:PDF")
+                .withField(StandardField.EPRINTTYPE, "arXiv")
+                .withField(StandardField.EPRINTCLASS, "cs.DC")
+                .withField(StandardField.KEYWORDS, "cs.DC, cs.LG");
+
+        List<BibEntry> resultWithPhraseSearch = fetcher.performSearch("ti:\"Taxonomy of Distributed\"");
+        // There is only a single paper found by searching that contains the exact sequence "Taxonomy of Distributed" in the title.
+        assertEquals(Collections.singletonList(expected), resultWithPhraseSearch);
     }
 
     @Test
