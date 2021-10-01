@@ -1,4 +1,9 @@
+# Get jitpack to work with JDK 15 https://github.com/jitpack/jitpack.io/issues/4355
 jdk:
   - openjdk15
 before_install:
-  - echo "Running a custom install command"
+  - ./ensure-java-15 install
+install:
+  - if ! ./ensure-java-15 use; then source ~/.sdkman/bin/sdkman-init.sh; fi
+  - java -version
+  - ./mvnw -pl gwt,default install
