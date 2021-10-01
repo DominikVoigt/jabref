@@ -779,7 +779,7 @@ task downloadDependencies {
 // Get maven publish to run for jitpack https://github.com/jitpack/gradle-simple/blob/master/build.gradle
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
-    from sourceSets.main.allSource
+    from sourceSets.main.java
 }
 
 artifacts {
