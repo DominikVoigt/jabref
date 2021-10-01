@@ -6,4 +6,5 @@ before_install:
 install:
   - if ! ./ensure-java-15 use; then source ~/.sdkman/bin/sdkman-init.sh; fi
   - java -version
-  - ./gradlew -pl gwt,default install
+  - ./gradlew install
+  - ./gradlew build publishToMavenLocal
