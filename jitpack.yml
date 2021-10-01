@@ -1,2 +1,5 @@
 jdk:
   - openjdk15
+before_install:
+  - echo "Running a custom install command"
+
