@@ -1,4 +1,4 @@
-# Get jitpack to work with JDK 15 https://github.com/jitpack/jitpack.io/issues/4355
+# Get jitpack to work with JDK 16 https://github.com/jitpack/jitpack.io/issues/4355
 jdk:
   - openjdk15
 before_install:
