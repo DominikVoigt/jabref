@@ -1,5 +1,6 @@
+# Get jitpack to work with JDK 16 https://github.com/jitpack/jitpack.io/issues/4355
 jdk:
   - openjdk15
 before_install:
-  - echo "Running a custom install command"
-
+  - ./ensure-java-16 install
+  - if ! ./ensure-java-16 use; then source ~/.sdkman/bin/sdkman-init.sh; fi
