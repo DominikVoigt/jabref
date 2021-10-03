@@ -776,7 +776,9 @@ task downloadDependencies {
 }
 
 
-// Provide sources with the publication for easy debugging
+/*
+ * Provide sources with the publication for easy debugging https://github.com/jitpack/gradle-simple/blob/master/build.gradle
+ */
 task sourcesJar(type: Jar, dependsOn: classes) {
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     archiveClassifier.set('sources')
