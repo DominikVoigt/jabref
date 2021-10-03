@@ -1,6 +1,4 @@
 open module org.jabref {
-    exports org.jabref.logic;
-
     // Swing
     requires java.desktop;
 
