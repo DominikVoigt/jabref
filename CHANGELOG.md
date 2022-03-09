@@ -21,13 +21,16 @@ Note that this project **does not** adhere to [Semantic Versioning](http://semve
 
 ### Fixed
 
+- We fixed an issue where online links in the file field were not detected correctly and could produce an exception [#8150](https://github.com/JabRef/jabref/issues/8510)
 - We fixed an issue where an exception could occur when saving the preferences [#7614](https://github.com/JabRef/jabref/issues/7614)
 - We fixed an issue where "Copy DOI url" in the right-click menu of the Entry List would just copy the DOI and not the DOI url. [#8389](https://github.com/JabRef/jabref/issues/8389)
 - We fixed an issue where opening the console from the drop-down menu would cause an exception. [#8466](https://github.com/JabRef/jabref/issues/8466)
+- We fixed an issue where pasting a URL was replacing + signs by spaces making the URL unreachable. [#8448](https://github.com/JabRef/jabref/issues/8448)
+- We fixed an issue where creating subsidiary files from aux files created with some versions of biblatex would produce incorrect results. [#8513](https://github.com/JabRef/jabref/issues/8513)
 
 ### Removed
 
-- We removed the option to copy CSL Citation styles data as `XSL_FO`, `ASCIIDOC`, and `RTF` as these haven not been working since a long time and are no longe rsupported in the external library used for processing the styles [#7378](https://github.com/JabRef/jabref/issues/7378)
+- We removed the option to copy CSL Citation styles data as `XSL_FO`, `ASCIIDOC`, and `RTF` as these have not been working since a long time and are no longer supported in the external library used for processing the styles [#7378](https://github.com/JabRef/jabref/issues/7378)
 
 
 
@@ -51,6 +54,7 @@ Note that this project **does not** adhere to [Semantic Versioning](http://semve
 - We moved the search box in preview preferences closer to the available citation styles list. [#8370](https://github.com/JabRef/jabref/pull/8370)
 - Changing the preference to show the preview panel as a separate tab now has effect without restarting JabRef. [#8370](https://github.com/JabRef/jabref/pull/8370)
 - We enabled switching themes in JabRef without the need to restart JabRef. [#7335](https://github.com/JabRef/jabref/pull/7335)
+- We added support for the field `day`, `rights`, `coverage` and `language` when reading XMP data in Dublin Core format. [#8491](https://github.com/JabRef/jabref/issues/8491)
 
 ### Fixed
 
