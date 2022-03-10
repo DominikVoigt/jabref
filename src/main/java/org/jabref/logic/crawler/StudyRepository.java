@@ -1,8 +1,6 @@
 package org.jabref.logic.crawler;
 
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.nio.charset.UnsupportedCharsetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,6 +13,7 @@ import java.util.stream.Collectors;
 
 import org.jabref.logic.citationkeypattern.CitationKeyGenerator;
 import org.jabref.logic.database.DatabaseMerger;
+import org.jabref.logic.exporter.AtomicFileWriter;
 import org.jabref.logic.exporter.BibWriter;
 import org.jabref.logic.exporter.BibtexDatabaseWriter;
 import org.jabref.logic.exporter.SaveException;
@@ -415,9 +414,10 @@ class StudyRepository {
         if (!Files.exists(pathToFile)) {
             Files.createFile(pathToFile);
         }
-        try (Writer fileWriter = new FileWriter(pathToFile.toFile())) {
+        try (AtomicFileWriter fileWriter = new AtomicFileWriter(pathToFile, entries.getMetaData().getEncoding().orElse(generalPreferences.getDefaultEncoding()), savePreferences.shouldMakeBackup())) {
             BibWriter bibWriter = new BibWriter(fileWriter, entries.getDatabase().getNewLineSeparator());
             BibtexDatabaseWriter databaseWriter = new BibtexDatabaseWriter(bibWriter, generalPreferences, savePreferences, bibEntryTypesManager);
+            LOGGER.info("Used encoding persistence slr: {}", entries.getMetaData().getEncoding().orElse(generalPreferences.getDefaultEncoding()).displayName());
             databaseWriter.saveDatabase(entries);
         } catch (UnsupportedCharsetException ex) {
             throw new SaveException(Localization.lang("Character encoding '%0' is not supported.", generalPreferences.getDefaultEncoding().displayName()), ex);
