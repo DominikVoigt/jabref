@@ -417,7 +417,6 @@ class StudyRepository {
         try (AtomicFileWriter fileWriter = new AtomicFileWriter(pathToFile, entries.getMetaData().getEncoding().orElse(generalPreferences.getDefaultEncoding()), savePreferences.shouldMakeBackup())) {
             BibWriter bibWriter = new BibWriter(fileWriter, entries.getDatabase().getNewLineSeparator());
             BibtexDatabaseWriter databaseWriter = new BibtexDatabaseWriter(bibWriter, generalPreferences, savePreferences, bibEntryTypesManager);
-            LOGGER.info("Used encoding persistence slr: {}", entries.getMetaData().getEncoding().orElse(generalPreferences.getDefaultEncoding()).displayName());
             databaseWriter.saveDatabase(entries);
         } catch (UnsupportedCharsetException ex) {
             throw new SaveException(Localization.lang("Character encoding '%0' is not supported.", generalPreferences.getDefaultEncoding().displayName()), ex);
