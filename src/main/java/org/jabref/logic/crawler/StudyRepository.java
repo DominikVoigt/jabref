@@ -1,8 +1,6 @@
 package org.jabref.logic.crawler;
 
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.nio.charset.UnsupportedCharsetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,6 +13,7 @@ import java.util.stream.Collectors;
 
 import org.jabref.logic.citationkeypattern.CitationKeyGenerator;
 import org.jabref.logic.database.DatabaseMerger;
+import org.jabref.logic.exporter.AtomicFileWriter;
 import org.jabref.logic.exporter.BibWriter;
 import org.jabref.logic.exporter.BibtexDatabaseWriter;
 import org.jabref.logic.exporter.SaveException;
@@ -25,7 +24,6 @@ import org.jabref.logic.importer.OpenDatabase;
 import org.jabref.logic.importer.ParseException;
 import org.jabref.logic.importer.SearchBasedFetcher;
 import org.jabref.logic.l10n.Localization;
-import org.jabref.logic.util.OS;
 import org.jabref.model.database.BibDatabase;
 import org.jabref.model.database.BibDatabaseContext;
 import org.jabref.model.entry.BibEntryTypesManager;
@@ -388,21 +386,21 @@ class StudyRepository {
                 // Aggregate each fetcher result into the query result
                 merger.merge(queryResultEntries, fetcherEntries);
 
-                writeResultToFile(getPathToFetcherResultFile(result.getQuery(), fetcherResult.getFetcherName()), existingFetcherResult.getDatabase());
+                writeResultToFile(getPathToFetcherResultFile(result.getQuery(), fetcherResult.getFetcherName()), existingFetcherResult);
             }
-            BibDatabase existingQueryEntries = getQueryResultEntries(result.getQuery()).getDatabase();
+            BibDatabaseContext existingQueryEntries = getQueryResultEntries(result.getQuery());
 
             // Merge new entries into query result file
-            merger.merge(existingQueryEntries, queryResultEntries);
+            merger.merge(existingQueryEntries.getDatabase(), queryResultEntries);
             // Aggregate all new entries for every query into the study result
             merger.merge(newStudyResultEntries, queryResultEntries);
 
             writeResultToFile(getPathToQueryResultFile(result.getQuery()), existingQueryEntries);
         }
-        BibDatabase existingStudyResultEntries = getStudyResultEntries().getDatabase();
+        BibDatabaseContext existingStudyResultEntries = getStudyResultEntries();
 
         // Merge new entries into study result file
-        merger.merge(existingStudyResultEntries, newStudyResultEntries);
+        merger.merge(existingStudyResultEntries.getDatabase(), newStudyResultEntries);
 
         writeResultToFile(getPathToStudyResultFile(), existingStudyResultEntries);
     }
@@ -412,14 +410,14 @@ class StudyRepository {
         targetEntries.getEntries().stream().filter(bibEntry -> !bibEntry.hasCitationKey()).forEach(citationKeyGenerator::generateAndSetKey);
     }
 
-    private void writeResultToFile(Path pathToFile, BibDatabase entries) throws IOException, SaveException {
+    private void writeResultToFile(Path pathToFile, BibDatabaseContext entries) throws IOException, SaveException {
         if (!Files.exists(pathToFile)) {
             Files.createFile(pathToFile);
         }
-        try (Writer fileWriter = new FileWriter(pathToFile.toFile())) {
-            BibWriter bibWriter = new BibWriter(fileWriter, OS.NEWLINE);
+        try (AtomicFileWriter fileWriter = new AtomicFileWriter(pathToFile, entries.getMetaData().getEncoding().orElse(generalPreferences.getDefaultEncoding()), savePreferences.shouldMakeBackup())) {
+            BibWriter bibWriter = new BibWriter(fileWriter, entries.getDatabase().getNewLineSeparator());
             BibtexDatabaseWriter databaseWriter = new BibtexDatabaseWriter(bibWriter, generalPreferences, savePreferences, bibEntryTypesManager);
-            databaseWriter.saveDatabase(new BibDatabaseContext(entries));
+            databaseWriter.saveDatabase(entries);
         } catch (UnsupportedCharsetException ex) {
             throw new SaveException(Localization.lang("Character encoding '%0' is not supported.", generalPreferences.getDefaultEncoding().displayName()), ex);
         } catch (IOException ex) {
